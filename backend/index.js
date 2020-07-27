@@ -3,14 +3,9 @@ const process = require("process");
 const mysql = require("mysql");
 require("dotenv").config();
 const iplocate = require("node-iplocate");
+const db = require("./config/db");
 
 const app = new express();
-const db = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: "testDB",
-});
 
 app.get("/protest/example", async (req, res) => {
   var protest = {
