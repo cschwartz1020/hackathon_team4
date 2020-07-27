@@ -3,12 +3,7 @@ const iplocate = require("node-iplocate");
 const protests = require("../../controllers/protest");
 
 //  Route - /api/protests
-router
-  .route("/")
-  .get((req, res) => {
-    res.send("test");
-  })
-  .post(protests.create);
+router.route("/").get(protests.findAll).post(protests.create);
 
 // Route - /api/protests/example
 router.route("/example").get(async (req, res) => {
