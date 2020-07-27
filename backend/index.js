@@ -8,6 +8,8 @@ db.sequelize.sync();
 const app = new express();
 app.use(express.json());
 const routes = require("./routes");
+var cors = require("cors");
+app.use(cors());
 
 app.use(routes);
 
