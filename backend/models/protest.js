@@ -9,7 +9,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     time: {
-      type: Sequelize.TIME,
+      type: Sequelize.DATE,
     },
     resources: {
       type: Sequelize.JSON,
