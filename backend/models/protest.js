@@ -1,5 +1,3 @@
-const uuid = require("uuid").v4;
-
 module.exports = (sequelize, Sequelize) => {
   const Protest = sequelize.define("protest", {
     title: {
