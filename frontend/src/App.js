@@ -17,7 +17,7 @@ function App() {
                     {/* Main route */}
                     {/* exact means this is the first page to load */}
                     <Route exact path="/">
-                        <SimpleMap/>
+                        {/* <SimpleMap/> */}
                     </Route>
                     {/* Follow the same structure as above to show your page */}
                     <Route path="/signup">
