@@ -1,5 +1,7 @@
 const process = require("process");
 require("dotenv").config();
+const util = require("./util/createDb");
+util.createDb();
 const express = require("express");
 
 const db = require("./config/db");
