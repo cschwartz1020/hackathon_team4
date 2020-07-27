@@ -2,7 +2,6 @@ import React from 'react';
 import { ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/navbar"
-import SimpleMap from "./components/simpleMap"
 import './App.css';
 import Protests from './pages/protests/Protests'
 
@@ -29,6 +28,9 @@ function App() {
                     </Route>
                     <Route path="/view">
                         <Protests/>
+                    </Route>
+                    <Route path="/feed">
+                        <h1>This is feed</h1>
                     </Route>
                     <Route path="*" exact={true}  ><h1>helloo</h1></Route>
                 </Switch>

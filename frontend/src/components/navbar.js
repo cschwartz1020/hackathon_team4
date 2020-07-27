@@ -1,5 +1,5 @@
 import React from 'react';
-// import './navbar.css';
+import '../css/navbar.css';
 import { Box, Heading, Flex, Text, Button } from "@chakra-ui/core";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,9 @@ const MenuItems = ({ children }) => (
     const handleToggle = () => setShow(!show);
   
     return (
+      <React.Fragment>
       <Flex
+        className="navagation-b"
         as="nav"
         align="center"
         justify="space-between"
@@ -33,8 +35,9 @@ const MenuItems = ({ children }) => (
   
         <Box display={{ base: "block", md: "none" }} onClick={handleToggle}>
           <svg
+            className="hamburger"
             fill="white"
-            width="12px"
+            width="22px"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -61,6 +64,9 @@ const MenuItems = ({ children }) => (
           <Link to="/view">
           <MenuItems>View</MenuItems>
           </Link>
+          <Link to="/feed">
+          <MenuItems>Feed</MenuItems>
+          </Link>
         </Box>
   
         <Box
@@ -72,6 +78,8 @@ const MenuItems = ({ children }) => (
           </Button>
         </Box>
       </Flex>
+      <div className="v-spacer"/>
+      </React.Fragment>
     );
   };
   

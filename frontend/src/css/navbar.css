@@ -1,0 +1,13 @@
+.hamburger {
+    cursor: pointer;
+}
+
+.navagation-b {
+    position: fixed;
+    width: 100%;
+    transition: all .3s ease-in-out;
+}
+
+.v-spacer {
+    height: 88px;
+}
