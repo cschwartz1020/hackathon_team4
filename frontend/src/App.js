@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import Navbar from "./components/navbar"
 import './App.css';
 import Protests from './pages/protests/Protests'
 
@@ -11,7 +11,7 @@ function App() {
       <ThemeProvider>
         <CSSReset />
             <Router>
-                <nav></nav>
+                <Navbar></Navbar>
                 <Switch>
                     {/* Main route */}
                     {/* exact means this is the first page to load */}
