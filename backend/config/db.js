@@ -1,4 +1,3 @@
-const mysql = require("mysql");
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
@@ -10,11 +9,9 @@ const sequelize = new Sequelize(
     dialect: process.env.DB_DIALECT,
   }
 );
-
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-
 db.Protest = require("../models/protest")(sequelize, Sequelize);
 
 module.exports = db;
