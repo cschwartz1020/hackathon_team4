@@ -1,0 +1,11 @@
+.column {
+    width: 50%;
+}
+
+.row {
+    display: flex;
+}
+
+.protests {
+    padding-top: 10px;
+}
