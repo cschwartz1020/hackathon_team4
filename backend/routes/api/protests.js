@@ -1,10 +1,14 @@
 const router = require("express").Router();
 const iplocate = require("node-iplocate");
+const protests = require("../../controllers/protest");
 
 //  Route - /api/protests
-router.route("/").get((req, res) => {
-  res.send("test");
-});
+router
+  .route("/")
+  .get((req, res) => {
+    res.send("test");
+  })
+  .post(protests.create);
 
 // Route - /api/protests/example
 router.route("/example").get(async (req, res) => {

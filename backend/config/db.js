@@ -1,20 +1,20 @@
 const mysql = require("mysql");
+const Sequelize = require("sequelize");
 
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    host: process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+  }
+);
 
-connection.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected to MySQL");
-  connection.query("CREATE DATABASE IF NOT EXISTS Year2020", function (
-    err,
-    result
-  ) {
-    if (err) throw err;
-  });
-});
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
-module.exports.db = connection;
+db.Protest = require("../models/protest")(sequelize, Sequelize);
+
+module.exports = db;
