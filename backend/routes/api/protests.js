@@ -4,6 +4,8 @@ const protests = require("../../controllers/protest");
 
 //  Route - /api/protests
 router.route("/").get(protests.findAll).post(protests.create);
+// Route - /api/protests/{protestId}
+router.route("/:protestId").get(protests.findOne);
 
 // Route - /api/protests/example
 router.route("/example").get(async (req, res) => {
