@@ -7,11 +7,24 @@ import '../../css/protests.css'
 
 const defaultProtest = [{
     summary: "For this protest we'll be meeting in Munn Park and walking to Charlotte. Bring signs, water, and masks.",
-    location: {
-        latitude: 43.4528,
-        longitude: -110.7393,
-        city: "Jackson"
-    },
+    startLocation: [
+        {
+            location: {
+                latitude: 43.4528,
+                longitude: -110.7393,
+                city: "Jackson"
+            }
+        }
+    ],
+    endLocation: [
+        {
+            location: {
+                latitude: 44.888,
+                longitude: -110.7393,
+                city: "Jackson"
+            }
+        }
+    ],
     date: new Date(),
     time: new Date(),
     title: "Protest Against Police Brutality",
@@ -33,8 +46,8 @@ const Protests = () => {
             let tempMarkers = [];
             for (const m of res.data) {
                 tempMarkers.push({
-                    lat: m.location.latitude,
-                    lng: m.location.longitude,
+                    lat: m.startLocation[0].location.latitude,
+                    lng: m.startLocation[0].location.longitude,
                     title: m.title
                 })
             }
@@ -43,15 +56,12 @@ const Protests = () => {
     }, [])
 
     const [protests, setProtests] = useState(defaultProtest)
-    const [protestClicked, setProtestClicked] = useState(protests[0])
+    const [protestClicked, setProtestClicked] = useState(defaultProtest[0])
     const [markers, setMarkers] = useState(defaultMarker)
-
-    console.log('PROTESTS: ', protests)
-    console.log(markers)
 
     const search = (id) => {
         for (var i = 0; i < protests.length; i++) {
-            if (protests[i].id === id) {
+            if (protests[i]._id === id) {
                 return protests[i];
             }
         }
@@ -64,10 +74,10 @@ const Protests = () => {
     return (
         <div className="protests">
             <div className="row">
-                <div className="column"><SimpleMap clickedMarker={{lat: protestClicked.location.latitude, lng: protestClicked.location.longitude, title: protestClicked.title}} markers={markers}/></div>
+                <div className="column"><SimpleMap clickedMarker={{lat: protestClicked.startLocation[0].location.latitude, lng: protestClicked.startLocation[0].location.longitude, title: protestClicked.title}} markers={markers}/></div>
                 <div className="column">
                 {protests.map(p => 
-                    <div><ProtestCard protest={p} isClicked={protestClicked.id === p.id ? true : false} onCardClick={onCardClick}/></div>
+                    <div><ProtestCard protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick}/></div>
                 )}
                 </div>
             </div>
