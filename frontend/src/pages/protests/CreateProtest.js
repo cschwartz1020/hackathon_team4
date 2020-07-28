@@ -10,6 +10,11 @@ import {
   Checkbox,
   CheckboxGroup,
   Heading,
+  List,
+  ListItem,
+  ListIcon,
+  InputRightElement,
+  InputGroup,
 } from "@chakra-ui/core";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -18,33 +23,28 @@ import PlacesAutocomplete, {
 import DateTimePicker from "react-datetime-picker";
 
 export function CreateProtest(props) {
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
+  const [title, setTitle] = useState(undefined);
+  const [desc, setDesc] = useState(undefined);
   const [startLocation, setStartLocation] = useState("");
   const [finalLocation, setFinalLocation] = useState("");
   const [startLocationObj, setStartLocationObj] = useState(undefined);
   const [finalLocationObj, setFinalLocationObj] = useState(undefined);
-  const [resource, setResource] = useState(["face masks, water bottles"]);
+  const [newResource, setNewResource] = useState(undefined);
+  const [resources, setResources] = useState(["face masks", "water bottles"]);
   const [datetime, setDateTime] = useState(new Date());
-
-  /*const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(event.target);
-    const cmdData = this.state.command;
-    const bodData = this.state.body;
-    const typData = this.state.type;
-    console.log("sending data to backend");
-    const data = { "Command": cmdData, "Body": bodData, "Type":typData }
-    console.log(data);
-    fetch('https://h6d3rqs549.execute-api.us-west-1.amazonaws.com/TestProd/addcommand', {
-      method: 'POST',
-      body: JSON.stringify(data)
-    });
-    alert("Your comamand '"+this.state.command+"' was added!");
-  }*/
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!title) {
+      alert("'Title' is a required field.");
+      return;
+    } else if (!startLocation) {
+      alert("'Start Location' is a required field.");
+      return;
+    } else if (!finalLocation) {
+      alert("'Final Location' is a required field.");
+      return;
+    }
     const data = {
       time: datetime,
       startLocation: {
@@ -55,16 +55,13 @@ export function CreateProtest(props) {
       },
       title: title,
       summary: desc,
-      resources: ["mask", "water bottle"],
+      resources: resources,
     };
     console.log(data);
-    fetch(
-      "http://localhost:3000/api/protests",
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-      }
-    );
+    fetch("http://localhost:3000/api/protests", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
   };
 
   const handleStartSelect = async (value) => {
@@ -105,7 +102,7 @@ export function CreateProtest(props) {
       },
       title: title,
       summary: desc,
-      resources: ["mask", "water bottle"],
+      resources: resources,
     });
   };
 
@@ -121,16 +118,38 @@ export function CreateProtest(props) {
     setDateTime(datetime);
   };
 
-  const handleStartLocationChange = (event) => {
-    setStartLocation(event);
+  const handleStartLocationChange = (value) => {
+    setStartLocation(value);
   };
 
-  const handleFinalLocationChange = (event) => {
-    setFinalLocation(event);
+  const handleFinalLocationChange = (value) => {
+    setFinalLocation(value);
   };
 
-  const handleResourceChange = (event) => {
-    setResource(event.target.value);
+  const handleResourceChange = (value) => {
+    setResources(value);
+  };
+
+  const handleNewResourceChange = (event) => {
+    setNewResource(event.target.value);
+  };
+
+  const handleNewResourceClick = () => {
+    const oldResources = resources;
+    oldResources.push(newResource);
+    setResources(oldResources);
+    setNewResource(undefined);
+  };
+
+  const makeCheckboxItems = () => {
+    var resourcesList = resources.map((item) => {
+      return (
+        <Checkbox isChecked="true" value={item}>
+          {item}
+        </Checkbox>
+      );
+    });
+    return resourcesList;
   };
 
   const getLocationDiv = (
@@ -238,56 +257,42 @@ export function CreateProtest(props) {
             </FormLabel>
             <CheckboxGroup
               onChange={handleResourceChange}
-              variantColor="green"
+              variantColor="blue"
               defaultValue={["face masks", "water bottles"]}
-              isInline="true"
             >
-              <Checkbox value="face masks">face masks</Checkbox>
-              <Checkbox value="water bottles">water bottles</Checkbox>
-              <Checkbox value="snacks">snacks</Checkbox>
-              <Checkbox value="protest signs">protest signs</Checkbox>
-              <Checkbox value="other">other</Checkbox>
+              {makeCheckboxItems()}
             </CheckboxGroup>
+            <InputGroup size="md">
+              <Input
+                focusBorderColor="teal.400"
+                id="addresource"
+                placeholder="Resource"
+                onChange={handleNewResourceChange}
+              />
+              <InputRightElement width="4.5rem">
+                <Button
+                  h="1.75rem"
+                  size="md"
+                  variantColor="teal"
+                  onClick={handleNewResourceClick}
+                >
+                  Add
+                </Button>
+              </InputRightElement>
+            </InputGroup>
           </FormControl>
           <Button
             mt={4}
             variantColor="teal"
             isLoading={props.isSubmitting}
             type="submit"
+            marginBottom="3%"
           >
             Submit
-          </Button>
-          <Button mt={4} variantColor="teal" onClick={printMessage}>
-            Print
           </Button>
         </form>
       </Box>
     </div>
   );
-  /*return (
-      <React.Fragment>
-      <div classTitle="containerx">
-	<h1 style={{ marginTop: "20px" }}>Add Commands</h1>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Group classTitle="command">
-            <Form.Label htmlFor="command">Enter Command: </Form.Label>
-            <Form.Control id="command" title="command" placeholder="Command" type="text" onChange={this.handleCmdChange} value={this.state.command} />
-          </Form.Group>
-          <Form.Group classTitle="body">
-            <Form.Label htmlFor="body">Enter Body: </Form.Label>
-            <Form.Control id="body" title="body" placeholder="Body" type="text" onChange={this.handleBodChange} value={this.state.body} />
-          </Form.Group>
-          <Form.Group controlId="typeDropdown">
-    	    <Form.Label>Choose Type:</Form.Label>
-    	    <Form.Control as="select" onChange={this.handleTypChange} value={this.state.type}>
-              <option>endpoint</option>
-              <option>string</option>
-            </Form.Control>
-          </Form.Group> 
-	  <Button variant="primary" type="submit">Submit!</Button>
-        </Form>
-      </div>
-      </React.Fragment>
-    );*/
 }
 export default CreateProtest;

@@ -7,3 +7,4 @@ mongoose.connect("mongodb://localhost/hackathonDB", {
 });
 
 module.exports.Protest = require("../models/protest");
+module.exports.Covid = require("../models/covid");
