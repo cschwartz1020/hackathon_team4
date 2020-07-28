@@ -47,6 +47,8 @@ const getMapReport = async (req, res) => {
       "region.cities.lat": 1,
       "region.cities.long": 1,
       "region.cities.confirmed": 1,
+      "region.province": 1,
+      "region.cities.name": 1,
       _id: 0,
     },
     function (err, reports) {
