@@ -3,7 +3,8 @@ import { ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/navbar"
 import './App.css';
-import Protests from './pages/protests/Protests'
+import Protests from './pages/protests/Protests';
+import CreateProtest from './pages/protests/CreateProtest';
 import Feed from "./pages/feed"
 import Home from "./pages/home"
 
@@ -26,8 +27,8 @@ function App() {
                     {/* Replace H1 with component */}
                         <h1>Hi this is a route</h1>
                     </Route>
-                    <Route path="/register">
-                        <h1>Hi this is the officials route, place component here </h1>
+                    <Route path="/registration">
+                        <CreateProtest/>
                     </Route>
                     <Route path="/view">
                         <Protests/>
