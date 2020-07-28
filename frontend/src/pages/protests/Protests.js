@@ -52,6 +52,10 @@ const defaultMarker = [{
 
 const Protests = () => {
     const [protestClicked, setProtestClicked] = useState(defaultProtest[0])
+    const [userCity, setUserCity] = useState('Charlotte')
+    const [userCoord, setUserCoord] = useState({ lat: 43.4528, lng: -110.7393})
+    const [localProtests, setLocalProtests] = useState(defaultProtest)
+
 
     useEffect(() => {
         axios.get('http://localhost:3000/api/protests/')
@@ -67,23 +71,18 @@ const Protests = () => {
                 })
             }
             setMarkers(tempMarkers)
-        }).then(() => {
-
         })
     }, [])
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            console.log("Latitude is :", position.coords.latitude);
-            console.log("Longitude is :", position.coords.longitude);
-          });
+        let city = '';
 
-          axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${protestClicked.startLocation[0].location.latitude},${protestClicked.startLocation[0].location.longitude}&sensor=true&key=${process.env.REACT_APP_API_KEY}`)
+        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${userCoord.lat},${userCoord.lng}&sensor=true&key=${process.env.REACT_APP_API_KEY}`)
           .then(res => {
               console.log('actual city: ', res.data.plus_code.compound_code)
               let words = res.data.plus_code.compound_code.split(',')
               let subWords = words[0].split(' ')
-              let city = '';
+              
               for (let i = 0; i < subWords.length; i++ ) {
                 if (i !== 0) {
                     city += subWords[i]
@@ -92,9 +91,28 @@ const Protests = () => {
                     city += ' '
                 }
               }
-              console.log('CITY: ', city)
+              setUserCity(city)
+          }).then(() => {
+                let userLocalProtests = [];
+                for (const protest of protests) {
+                    if (protest.startLocation[0].location.city === city) {
+                        userLocalProtests.push(protest)
+                    }
+                }
+
+                setLocalProtests(userLocalProtests)
+                console.log('Local Protests: ', userLocalProtests)
           })
-    }, [protestClicked])
+    }, [userCoord])
+
+    console.log('the protests near this user are: ', localProtests)
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            setUserCoord({ lat: position.coords.latitude, lng: position.coords.longitude})
+        });
+          
+    }, [])
 
     const [protests, setProtests] = useState(defaultProtest)
     const [markers, setMarkers] = useState(defaultMarker)
