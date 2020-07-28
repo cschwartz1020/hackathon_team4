@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const iplocate = require("node-iplocate");
-const protests = require("../../controllers/protest");
+const protests = require("../../../controllers/protest");
 
 //  Route - /api/protests
 router.route("/").get(protests.find_all_protests).post(protests.create_protest);

@@ -19,7 +19,7 @@ const Protest = ({ protest, isClicked, onCardClick }) => {
     }
 
     const cardClick = () => {
-        onCardClick(protest.id)
+        onCardClick(protest._id)
     }
 
     return (
@@ -48,7 +48,7 @@ const Protest = ({ protest, isClicked, onCardClick }) => {
                     textTransform="uppercase"
                     ml="2"
                 >
-                    {protest.location.city}
+                    {protest.startLocation[0].location.city}
                 </Box>
                 <Box
                     color="white"
