@@ -1,0 +1,28 @@
+version: "3"
+services:
+  backend:
+    build: ./backend
+    ports:
+      - 3000:3000
+    environment:
+      - PORT=3000
+    links:
+      - mongo
+    volumes:
+      - ./backend:/home/app
+    expose:
+      - 3000
+  frontend:
+    build: ./frontend
+    ports:
+      - 3001:3001
+    environment:
+      - PORT=3001
+    volumes:
+      - ./frontend:/home/app
+    tty: true
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    ports:
+      - 27017:27017
