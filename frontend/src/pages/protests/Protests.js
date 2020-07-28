@@ -33,8 +33,16 @@ const Protests = () => {
     console.log('PROTESTS: ', protests)
     console.log('id:', protests[0].id)
 
+    const search = (id) => {
+        for (var i = 0; i < protests.length; i++) {
+            if (protests[i].id === id) {
+                return protests[i];
+            }
+        }
+    }
+
     const onCardClick = (id) => {
-        setProtestClicked(protests[id-1])
+        setProtestClicked(search(id))
     }
 
     return (
