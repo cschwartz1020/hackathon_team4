@@ -34,4 +34,15 @@ exports.findAll = (req, res) => {
     });
 };
 
-exports.findOne = (req, res) => {};
+exports.findOne = (req, res) => {
+  const id = req.params.protestId;
+  Protest.findByPk(id)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving Protest with id=" + id,
+      });
+    });
+};

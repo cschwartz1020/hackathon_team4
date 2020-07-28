@@ -3,6 +3,10 @@ import { Box, Button } from "@chakra-ui/core";
 
 const Protest = ({ protest, isClicked, onCardClick }) => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let date = new Date(Date.parse(protest.time));
+    let hour = date.getHours() > 12 ?  date.getHours() - 12 : date.getHours();
+    let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+    let time = hour + ':' + minutes
 
     const focus = {
         backgroundColor: "beige",
@@ -34,7 +38,7 @@ const Protest = ({ protest, isClicked, onCardClick }) => {
                 <Box
                     color="gray.500"
                 >
-                    {days[protest.date.getDay()]} at {protest.time}
+                    {days[date.getDay()]} at {time}
                 </Box>
                 <Box
                     color="gray.500"
@@ -44,12 +48,12 @@ const Protest = ({ protest, isClicked, onCardClick }) => {
                     textTransform="uppercase"
                     ml="2"
                 >
-                    {protest.startLoc} &bull; {protest.endLoc}
+                    {protest.location.city}
                 </Box>
                 <Box
                     color="white"
                 >
-                    {protest.description}
+                    {protest.summary}
                 </Box>
             </Box>
         </div>
