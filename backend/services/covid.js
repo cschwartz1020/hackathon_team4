@@ -1,34 +1,27 @@
-const coordinates = require("../models/coordinates");
 const db = require("../config/mongo");
+const fetch = require("node-fetch");
 
-const postCoordinates = async (req, res) => {
-  try {
-    const data = req.body;
-    box = data;
-    var boundingBox = new coordinates.Coordinates(req.body);
-    await res.status(200).json(boundingBox);
-  } catch (err) {
-    res.status(500).send({
-      message:
-        err.message || "Some error occurred while receiving map coordinates",
-    });
-  }
-  return box;
-};
+const getAllData = async (req, res) => {
+  var requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
 
-const getCoordinates = async (req, res, boundingBox) => {
-  if (!boundingBox) {
-    res.status(500).send({
-      message:
-        err.message || "Some error occurred fetching map view coordinates",
+  await fetch("https://covid-api.com/api/reports", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((error) => {
+      res.status(500).send({
+        message:
+          error.message ||
+          "Some error occurred while fetching COVID data from John's Hokpins API",
+      });
     });
-  }
-  await res.status(200).json(boundingBox);
-  console.log(boundingBox);
 };
 
 const getMapReport = async (req, res) => {
-  console.log(req);
   await db.Covid.find(
     {
       "region.cities.lat": {
@@ -66,5 +59,4 @@ const getMapReport = async (req, res) => {
 };
 
 module.exports.getMapReport = getMapReport;
-module.exports.postCoordinates = postCoordinates;
-module.exports.getCoordinates = getCoordinates;
+module.exports.getAllData = getAllData;
