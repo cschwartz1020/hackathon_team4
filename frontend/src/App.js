@@ -5,6 +5,7 @@ import Navbar from "./components/navbar"
 import './App.css';
 import Protests from './pages/protests/Protests'
 import Feed from "./pages/feed"
+import Home from "./pages/home"
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
                     {/* exact means this is the first page to load */}
                     <Route exact path="/">
                         {/* <SimpleMap/> */}
+                        <Home />
                     </Route>
                     {/* Follow the same structure as above to show your page */}
                     <Route path="/signup">
