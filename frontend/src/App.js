@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/navbar"
 import './App.css';
 import Protests from './pages/protests/Protests'
+import Feed from "./pages/feed"
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
                         <Protests/>
                     </Route>
                     <Route path="/feed">
-                        <h1>This is feed</h1>
+                        <Feed></Feed>
                     </Route>
                     <Route path="*" exact={true}  ><h1>helloo</h1></Route>
                 </Switch>

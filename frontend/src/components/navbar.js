@@ -23,7 +23,7 @@ const MenuItems = ({ children }) => (
         justify="space-between"
         wrap="wrap"
         padding="1.5rem"
-        bg="gray.500"
+        bg="#15202B"
         color="white"
         {...props}
       >
