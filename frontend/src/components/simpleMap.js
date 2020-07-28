@@ -2,8 +2,8 @@ import React from 'react';
 import GoogleMapReact from 'google-map-react';
 import Marker from "./marker"
 
-const SimpleMap = ({ protests, clickedProtest }) => {
-  let center = {lat: clickedProtest.lat, lng: clickedProtest.lng}
+const SimpleMap = ({ markers, clickedMarker, zoom }) => {
+  let center = {lat: clickedMarker.lat, lng: clickedMarker.lng}
 
   const defaultProps = {
     center: {
@@ -21,11 +21,11 @@ const SimpleMap = ({ protests, clickedProtest }) => {
         center={center}
         defaultZoom={defaultProps.zoom}
       >
-        {protests.map(p => 
+        {markers.map(m =>  // [{lat, lng, title}]
           <Marker
-            lat={p.lat}
-            lng={p.lng}
-            text={p.title}
+            lat={m.lat}
+            lng={m.lng}
+            text={m.title}
           />
         )}
       </GoogleMapReact>
