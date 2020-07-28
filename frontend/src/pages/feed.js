@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, {  useState } from "react"
 import "../css/feed.css"
 import pump from "../images/pumpkin.jpg";
 import SimpleMap from "../components/simpleMap"
@@ -11,7 +11,7 @@ const protests = [
         endLoc: "Charlotte",
         date: new Date(),
         lat: 34.155834,
-        lng: -119.202789,
+        lng:  -119.202789,
         time: "8:05am",
         title: "Protest Against Police Brutality",
         resources: ["masks", "water"],
@@ -20,13 +20,14 @@ const protests = [
 
 ];
 
+const defaultMarker = {
+    lat: 34.155834,
+    lng:  -119.202789,
+    title: "Example marker"
+};
+
 
 const Feed = props => {
-    const [protestClicked, setProtestClicked] = useState(protests[0])
-
-    const onCardClick = (id) => {
-        setProtestClicked(protests[id])
-    }
 
   return (
       <React.Fragment>
@@ -52,7 +53,7 @@ const Feed = props => {
           ))}
         </div>
         <div className="sec-2">
-        <SimpleMap clickedProtest={protestClicked} protests={protests}/>
+        <SimpleMap clickedMarker={defaultMarker} markers={protests}/>
         </div>
       </div>
       </React.Fragment>
