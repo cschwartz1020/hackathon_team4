@@ -1,5 +1,12 @@
-.column {
+.rightcolumn {
     width: 50%;
+    height: 650px;
+    overflow-y: scroll;
+}
+
+.leftcolumn {
+    width: 50%;
+    height: 600px;
 }
 
 .row {
@@ -8,4 +15,5 @@
 
 .protests {
     padding-top: 10px;
+    /* background-color: aqua; */
 }
