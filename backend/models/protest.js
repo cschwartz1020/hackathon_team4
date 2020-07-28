@@ -1,20 +1,24 @@
-module.exports = (sequelize, Sequelize) => {
-  const Protest = sequelize.define("protest", {
-    title: {
-      type: Sequelize.STRING,
+const mongoose = require("mongoose");
+const Location = require("./location");
+
+const protestSchema = new mongoose.Schema({
+  time: {
+    type: Date,
+  },
+  startLocation: [Location],
+  endLocation: [Location],
+  title: {
+    type: String,
+  },
+  summary: {
+    type: String,
+  },
+  resources: [
+    {
+      type: String,
     },
-    summary: {
-      type: Sequelize.STRING,
-    },
-    time: {
-      type: Sequelize.DATE,
-    },
-    resources: {
-      type: Sequelize.JSON,
-    },
-    location: {
-      type: Sequelize.JSON,
-    },
-  });
-  return Protest;
-};
+  ],
+});
+
+const Protest = mongoose.model("Protest", protestSchema);
+module.exports = Protest;
