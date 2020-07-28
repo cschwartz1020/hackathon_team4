@@ -1,48 +1,19 @@
-const db = require("../config/db");
+const db = require("../config/mongo");
+const { create } = require("../models/protest");
+protestServices = require("../services/protest");
 
-const { sequelize } = require("../config/db");
+async function create_protest(req, res) {
+  await protestServices.create(req, res);
+}
 
-const Protest = db.Protest;
-const Op = db.Sequelize.Op;
+async function find_all_protests(req, res) {
+  await protestServices.findAll(req, res);
+}
 
-exports.create = (req, res) => {
-  let protest = req.body;
-  Protest.create(protest)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the protest event",
-      });
-    });
-};
+async function find_one_protest(req, res) {
+  await protestServices.findOne(req, res);
+}
 
-exports.findAll = (req, res) => {
-  Protest.findAll()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Some error occurred while fetching all protest events",
-      });
-    });
-};
-
-exports.findOne = (req, res) => {
-  const id = req.params.protestId;
-  Protest.findByPk(id)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving Protest with id=" + id,
-      });
-    });
-};
+module.exports.create_protest = create_protest;
+module.exports.find_all_protests = find_all_protests;
+module.exports.find_one_protest = find_one_protest;
