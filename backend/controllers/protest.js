@@ -1,5 +1,3 @@
-const db = require("../config/mongo");
-const { create } = require("../models/protest");
 protestServices = require("../services/protest");
 
 async function create_protest(req, res) {
