@@ -1,42 +1,40 @@
 import React, { useEffect, useState } from "react"
-import { Box, Button } from "@chakra-ui/core";
+import axios from 'axios';
 
 import SimpleMap from '../../components/simpleMap'
 import ProtestCard from '../../components/ProtestCard'
 import '../../css/protests.css'
 
-const protests = [
-    {
-        description: "For this protest we'll be meeting in Munn Park and walking to Charlotte. Bring signs, water, and masks.",
-        startLoc: "Lakeland",
-        endLoc: "Charlotte",
-        date: new Date(),
-        lat: 28,
-        lng: 86,
-        time: "8:05am",
-        title: "Protest Against Police Brutality",
-        resources: ["masks", "water"],
-        id: 0,
+const defaultProtest = [{
+    summary: "For this protest we'll be meeting in Munn Park and walking to Charlotte. Bring signs, water, and masks.",
+    location: {
+        latitude: 43.4528,
+        longitude: -110.7393,
+        city: "Jackson"
     },
-    {
-        description: "This is another really great protest you should attend. Like it's gonna be great. We have 100+ people signed up already. Awesome.",
-        startLoc: "Lakeland",
-        endLoc: "Charlotte",
-        date: new Date(),
-        lat: 35.2271,
-        lng: 82.8431,
-        time: "8:05am",
-        title: "Justiceee",
-        resources: ["masks", "water"],
-        id: 1
-    }
-];
+    date: new Date(),
+    time: new Date(),
+    title: "Protest Against Police Brutality",
+    resources: ["masks", "water"],
+    id: 1,
+}];
 
 const Protests = () => {
+    useEffect(() => {
+        axios.get('http://localhost:3000/api/protests/')
+        .then(res => {
+            setProtests(res.data)
+        })
+    }, [])
+
+    const [protests, setProtests] = useState(defaultProtest)
     const [protestClicked, setProtestClicked] = useState(protests[0])
 
+    console.log('PROTESTS: ', protests)
+    console.log('id:', protests[0].id)
+
     const onCardClick = (id) => {
-        setProtestClicked(protests[id])
+        setProtestClicked(protests[id-1])
     }
 
     return (

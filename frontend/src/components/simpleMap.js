@@ -3,7 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import Marker from "./marker"
 
 const SimpleMap = ({ protests, clickedProtest }) => {
-  let center = {lat: clickedProtest.lat, lng: clickedProtest.lng}
+  let center = {lat: clickedProtest.location.latitude, lng: clickedProtest.location.longitude}
 
   const defaultProps = {
     center: {
@@ -23,8 +23,8 @@ const SimpleMap = ({ protests, clickedProtest }) => {
       >
         {protests.map(p => 
           <Marker
-            lat={p.lat}
-            lng={p.lng}
+            lat={p.location.latitude}
+            lng={p.location.longitude}
             text={p.title}
           />
         )}
