@@ -19,19 +19,35 @@ const defaultProtest = [{
     id: 1,
 }];
 
+const defaultMarker = [{
+    lat: 43.4528,
+    lng: -110.7393,
+    title: "Example marker"
+}];
+
 const Protests = () => {
     useEffect(() => {
         axios.get('http://localhost:3000/api/protests/')
         .then(res => {
             setProtests(res.data)
+            let tempMarkers = [];
+            for (const m of res.data) {
+                tempMarkers.push({
+                    lat: m.location.latitude,
+                    lng: m.location.longitude,
+                    title: m.title
+                })
+            }
+            setMarkers(tempMarkers)
         })
     }, [])
 
     const [protests, setProtests] = useState(defaultProtest)
     const [protestClicked, setProtestClicked] = useState(protests[0])
+    const [markers, setMarkers] = useState(defaultMarker)
 
     console.log('PROTESTS: ', protests)
-    console.log('id:', protests[0].id)
+    console.log(markers)
 
     const search = (id) => {
         for (var i = 0; i < protests.length; i++) {
@@ -48,7 +64,7 @@ const Protests = () => {
     return (
         <div className="protests">
             <div className="row">
-                <div className="column"><SimpleMap clickedProtest={protestClicked} protests={protests}/></div>
+                <div className="column"><SimpleMap clickedMarker={{lat: protestClicked.location.latitude, lng: protestClicked.location.longitude, title: protestClicked.title}} markers={markers}/></div>
                 <div className="column">
                 {protests.map(p => 
                     <div><ProtestCard protest={p} isClicked={protestClicked.id === p.id ? true : false} onCardClick={onCardClick}/></div>
