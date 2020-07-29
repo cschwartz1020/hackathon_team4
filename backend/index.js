@@ -1,15 +1,17 @@
-const process = require("process");
 require("dotenv").config();
+const process = require("process");
 const express = require("express");
 const app = new express();
-app.use(express.json());
-const routes = require("./routes");
 var cors = require("cors");
-app.use(cors());
+const routes = require("./routes");
 covidHelper = require("./util/covid/createCollection");
+newsHelper = require("./util/article/createCollection");
+app.use(express.json());
+app.use(cors());
 app.use(routes);
 
 app.listen(process.env.PORT || 3000, () => {
-  covidHelper.createCollection();
-  console.log("Server started on port 3000");
+  covidHelper.createCollectionIfNotExists();
+  newsHelper.createCollectionIfNotExists();
+  console.log(`Server started on port ${process.env.PORT || 3000}`);
 });

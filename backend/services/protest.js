@@ -42,7 +42,6 @@ async function findOne(req, res) {
       });
       return;
     }
-    console.log(protest);
     return res.status(200).json(protest);
   });
 }

@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 async function createCollectionIfNotExists() {
   const conn = mongoose.createConnection("mongodb://mongo:27017/hackathonDB");
-  var covidExists = false;
+  var articlesExists = false;
   conn.on("open", function () {
     conn.db.listCollections().toArray(function (err, collectionNames) {
       if (err) {
@@ -12,11 +12,11 @@ async function createCollectionIfNotExists() {
         return;
       }
       collectionNames.forEach((collection) => {
-        if (collection.name === "covids") {
-          covidExists = true;
+        if (collection.name === "articles") {
+          articlesExists = true;
         }
       });
-      if (!covidExists) {
+      if (!articlesExists) {
         dumpData();
       }
       conn.close();
@@ -32,41 +32,35 @@ async function createCollectionIfNotExists() {
       },
     };
 
-    await fetch("http://localhost:3000/api/covid/all", requestOptions)
+    await fetch("http://localhost:3000/api/article/all", requestOptions)
       .then((response) => response.json())
-      .then((result) => result.data)
-      .then((data) => {
-        prepareForMongo(data);
-      })
-
+      .then((result) => result.articles)
+      .then((news) => prepareForMongo(news))
       .catch((error) => console.log("error", error));
   }
 }
 
-function prepareForMongo(covidData) {
-  covidData.forEach((item) => {
-    db.Covid.create({
-      date: item.date,
-      confirmed: item.confirmed,
-      deaths: item.deaths,
-      recovered: item.recovered,
-      confirmed_diff: item.confirmed_diff,
-      deaths_diff: item.deaths_diff,
-      recoverd_diff: item.recoverd_diff,
-      last_update: item.last_update,
-      active: item.active,
-      active_diff: item.active_diff,
-      fatality_rate: item.fatality_rate,
-      region: item.region,
+function prepareForMongo(news) {
+  news.forEach((article) => {
+    db.Article.create({
+      source: article.source,
+      author: article.author,
+      title: article.title,
+      description: article.description,
+      url: article.url,
+      urlToImage: article.urlToImage,
+      publishedAt: article.publishedAt,
+      content: article.content,
     }).catch((err) => {
       console.log(
         err.message,
-        "Some error occurred while creating Covid collection"
+        "Some error occurred while creating Articles collection"
       );
       return;
     });
   });
-  console.log("Succesfully created Covid collection");
+
+  console.log("Succesfully created Articles collection");
 }
 
 module.exports.createCollectionIfNotExists = createCollectionIfNotExists;

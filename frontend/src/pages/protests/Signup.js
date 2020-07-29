@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import {
   FormControl,
   FormLabel,
@@ -11,9 +10,6 @@ import {
   Checkbox,
   CheckboxGroup,
   Heading,
-  List,
-  ListItem,
-  ListIcon,
   InputRightElement,
   InputGroup,
 } from "@chakra-ui/core";
@@ -23,9 +19,9 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import DateTimePicker from "react-datetime-picker";
 
-export function CreateProtest(props) {
+export function Signup(props) {
   const [title, setTitle] = useState(undefined);
-  const [desc, setDesc] = useState("");
+  const [desc, setDesc] = useState(undefined);
   const [startLocation, setStartLocation] = useState("");
   const [finalLocation, setFinalLocation] = useState("");
   const [startLocationObj, setStartLocationObj] = useState(undefined);
@@ -58,16 +54,11 @@ export function CreateProtest(props) {
       summary: desc,
       resources: resources,
     };
-    try {
-      const response = axios({
-        method: "post",
-        url: "http://localhost:3000/api/protests",
-        data: data,
-      });
-      console.log('👉 Returned data:',response);
-    } catch (e) {
-      console.log(`😱 Axios request failed: ${e}`);
-    }
+    console.log(data);
+    fetch("http://localhost:3000/api/protests", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
   };
 
   const handleStartSelect = async (value) => {
@@ -198,7 +189,7 @@ export function CreateProtest(props) {
   return (
     <div>
       <Heading as="h1" size="xl" marginTop="3%">
-        Register Your Event
+        Sign Up For An Event
       </Heading>
       <Box
         margin="auto"
@@ -264,7 +255,9 @@ export function CreateProtest(props) {
             <CheckboxGroup
               onChange={handleResourceChange}
               variantColor="blue"
-              defaultValue={["face masks", "water bottles"]}
+              marginBottom="3%"
+              defaultValue={["face masks", "water bottles"]
+            }
             >
               {makeCheckboxItems()}
             </CheckboxGroup>
@@ -301,4 +294,4 @@ export function CreateProtest(props) {
     </div>
   );
 }
-export default CreateProtest;
+export default Signup;
