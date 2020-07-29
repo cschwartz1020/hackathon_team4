@@ -1,32 +1,50 @@
 const db = require("../../config/mongo");
 const fetch = require("node-fetch");
+const mongoose = require("mongoose");
 
-async function createCollection() {
-  var requestOptions = {
-    method: "GET",
-    redirect: "follow",
-    headers: {
-      Accept: "application/json",
-    },
-  };
+async function createCollectionIfNotExists() {
+  const conn = mongoose.createConnection("mongodb://mongo:27017/hackathonDB");
+  var covidExists = false;
+  conn.on("open", function () {
+    conn.db.listCollections().toArray(function (err, collectionNames) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      collectionNames.forEach((collection) => {
+        if (collection.name === "covids") {
+          covidExists = true;
+        }
+      });
+      if (!covidExists) {
+        dumpData();
+      }
+      conn.close();
+    });
+  });
 
-  await fetch("http://localhost:3000/api/covid/all", requestOptions)
-    .then((response) => response.json())
-    .then((result) => result.data)
-    .then((data) => {
-      prepareForMongo(data);
-    })
+  async function dumpData() {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+      headers: {
+        Accept: "application/json",
+      },
+    };
 
-    .catch((error) => console.log("error", error));
+    await fetch("http://localhost:3000/api/covid/all", requestOptions)
+      .then((response) => response.json())
+      .then((result) => result.data)
+      .then((data) => {
+        prepareForMongo(data);
+      })
+
+      .catch((error) => console.log("error", error));
+  }
 }
 
 function prepareForMongo(covidData) {
-  let i = 1;
   covidData.forEach((item) => {
-    if (i == 1) {
-      console.log(item);
-      i++;
-    }
     db.Covid.create({
       date: item.date,
       confirmed: item.confirmed,
@@ -51,4 +69,4 @@ function prepareForMongo(covidData) {
   console.log("Succesfully created Covid collection");
 }
 
-module.exports.createCollection = createCollection;
+module.exports.createCollectionIfNotExists = createCollectionIfNotExists;

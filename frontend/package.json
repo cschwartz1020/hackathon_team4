@@ -14,12 +14,16 @@
     "emotion-theming": "^10.0.27",
     "env-cmd": "^10.1.0",
     "google-map-react": "^1.1.7",
+    "lodash": "^4.17.19",
+    "lodash.isempty": "^4.4.0",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-datetime-picker": "^3.0.2",
     "react-dom": "^16.13.1",
     "react-places-autocomplete": "^7.3.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.1.1"
   },
   "scripts": {
     "start": "env-cmd -f ./.env react-scripts start",
