@@ -17,10 +17,12 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.9.26",
+    "mongoose-random": "^0.1.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
     "node-fetch": "^2.6.0",
     "node-iplocate": "^1.0.2",
+    "random": "^2.2.0",
     "sequelize": "^6.3.3",
     "uuid": "^8.2.0"
   },
