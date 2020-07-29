@@ -9,7 +9,7 @@ mongoose.connect(
   }
 );
 
-module.exports.Article = require("../models/Article");
+module.exports.Article = require("../models/article");
 module.exports.Protest = require("../models/protest").Protest;
 module.exports.Covid = require("../models/covid");
 module.exports.User = require("../models/user");

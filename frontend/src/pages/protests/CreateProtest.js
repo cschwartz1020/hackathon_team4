@@ -3,17 +3,12 @@ import axios from "axios";
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Button,
   Input,
   Box,
   Checkbox,
   CheckboxGroup,
   Heading,
-  List,
-  ListItem,
-  ListIcon,
   InputRightElement,
   InputGroup,
 } from "@chakra-ui/core";
@@ -46,8 +41,9 @@ export function CreateProtest(props) {
       alert("'Final Location' is a required field.");
       return;
     }
+    const datetimeStr = getDatetimeStr(datetime);
     const data = {
-      time: datetime,
+      time: datetimeStr,
       startLocation: {
         location: startLocationObj,
       },
@@ -64,7 +60,7 @@ export function CreateProtest(props) {
         url: "http://localhost:3000/api/protests",
         data: data,
       });
-      console.log('👉 Returned data:',response);
+      console.log("👉 Returned data:", response);
     } catch (e) {
       console.log(`😱 Axios request failed: ${e}`);
     }
@@ -73,7 +69,6 @@ export function CreateProtest(props) {
   const handleStartSelect = async (value) => {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
-    console.log(results);
     setStartLocation(value);
     setStartLocationObj({
       country: results[0].address_components[5].long_name,
@@ -97,7 +92,7 @@ export function CreateProtest(props) {
     });
   };
 
-  const printMessage = (event) => {
+  /*const printMessage = (event) => {
     console.log({
       time: datetime,
       startLocation: {
@@ -110,7 +105,7 @@ export function CreateProtest(props) {
       summary: desc,
       resources: resources,
     });
-  };
+  };*/
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -118,6 +113,34 @@ export function CreateProtest(props) {
 
   const handleDescChange = (event) => {
     setDesc(event.target.value);
+  };
+
+  const getDatetimeStr = (datetime) => {
+    const date = datetime;
+    const dateTimeFormat = new Intl.DateTimeFormat("en", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const [
+      { value: month },
+      ,
+      { value: day },
+      ,
+      { value: year },
+      ,
+      { value: hour },
+      ,
+      { value: minute },
+      ,
+      { value: second },
+    ] = dateTimeFormat.formatToParts(date);
+    const datetimeStr = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    return datetimeStr;
   };
 
   const handleDateTimeChange = (datetime) => {
