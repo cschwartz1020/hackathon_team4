@@ -5,6 +5,7 @@ import Navbar from "./components/navbar"
 import './App.css';
 import Protests from './pages/protests/Protests';
 import CreateProtest from './pages/protests/CreateProtest';
+import Signup from './pages/protests/Signup';
 import Feed from "./pages/feed"
 import Home from "./pages/home"
 
@@ -25,7 +26,7 @@ function App() {
                     {/* Follow the same structure as above to show your page */}
                     <Route path="/signup">
                     {/* Replace H1 with component */}
-                        <h1>Hi this is a route</h1>
+                        <Signup/>
                     </Route>
                     <Route path="/registration">
                         <CreateProtest/>
