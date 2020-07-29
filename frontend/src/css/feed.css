@@ -57,15 +57,16 @@ h4 {
 .card-head {
   transition: all 0.2s ease-in-out;
   color: #767676;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 17px;
   height: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 600;
+  padding-right: 1em;
 }
 
 .news-card-img {
-  max-height: 100px;
+  max-height: 130px;
   border-radius: 4px;
 }
 
@@ -74,7 +75,7 @@ h4 {
   margin-bottom: 40px;
   width: 262px;
   height: 90px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .card-desc h3 {

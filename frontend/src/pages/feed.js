@@ -38,12 +38,12 @@ const Feed = props => {
   }, [])
   
   const getNews = () => {
-    fetch('localhost:3000/api/article/30')
-          .then(response => response.json())
-          .then(articles => {
-            //console.log(articles.articles[0]);
-            setNewsData(articles.articles);
-          }).catch(error => console.log(error));
+    axios
+      .get("http://localhost:3000/api/article/35")
+         .then(response =>{
+            setNewsData(response.data);
+            console.log(response);
+         })
   }
 
   const  newsItems = Object.entries(newsData).map(([item, value])  =>  {
