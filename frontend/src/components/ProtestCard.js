@@ -4,14 +4,11 @@ import { Box, IconButton } from "@chakra-ui/core";
 const Protest = ({ protest, isClicked, onCardClick, openModal }) => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let date = new Date(Date.parse(protest.time));
-    console.log(date)
 
     let hour = date.getHours() > 12 ?  date.getHours() - 12 : date.getHours();
     let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
     let timeOfDay = date.getHours() > 12 ? 'PM' : 'AM'
     let time = hour + ':' + minutes + ' ' + timeOfDay
-
-    //console.log("time: ", date.toTimeString().split(' ')[0])
 
     const focus = {
         backgroundColor: "beige",
@@ -22,8 +19,6 @@ const Protest = ({ protest, isClicked, onCardClick, openModal }) => {
     const card = {
         padding: "10px"
     }
-
-    console.log(protest)
 
     const cardClick = () => {
         onCardClick(protest._id)
