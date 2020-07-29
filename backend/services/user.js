@@ -39,6 +39,25 @@ async function findOne(req, res) {
   });
 }
 
+async function findByIdAndUpdate(req, res) {
+  await db.User.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true },
+    (err, user) => {
+      if (err) {
+        return res.status(500).send({
+          message:
+            err.message ||
+            `Some error occurred while updating user with ID ${req.params.id}`,
+        });
+      }
+      return res.send(user);
+    }
+  );
+}
+
 module.exports.create = create;
 module.exports.findAll = findAll;
 module.exports.findOne = findOne;
+module.exports.findByIdAndUpdate = findByIdAndUpdate;
