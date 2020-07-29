@@ -18,6 +18,9 @@ const protestSchema = new mongoose.Schema({
       type: String,
     },
   ],
+  attendanceCount: {
+    type: Number,
+  },
 });
 
 const Protest = mongoose.model("Protest", protestSchema);

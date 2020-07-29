@@ -8,6 +8,7 @@ async function create(req, res) {
     title: req.body.title,
     summary: req.body.summary,
     resources: req.body.resources,
+    attendanceCount: req.body.attendanceCount,
   }).catch((err) => {
     console.log(err);
     res.status(500).send({
@@ -46,6 +47,26 @@ async function findOne(req, res) {
   });
 }
 
+async function findByIdAndUpdate(req, res) {
+  await db.Protest.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true },
+    (err, protest) => {
+      if (err) {
+        return res
+          .status(500)
+          .send(
+            err.message ||
+              `Some error occurred while updating protest with ID ${req.params.id}`
+          );
+      }
+      return res.send(protest);
+    }
+  );
+}
+
 module.exports.create = create;
 module.exports.findAll = findAll;
 module.exports.findOne = findOne;
+module.exports.findByIdAndUpdate = findByIdAndUpdate;

@@ -12,6 +12,11 @@ async function find_one_protest(req, res) {
   await protestServices.findOne(req, res);
 }
 
+async function find_protest_and_update(req, res) {
+  await protestServices.findByIdAndUpdate(req, res);
+}
+
 module.exports.create_protest = create_protest;
 module.exports.find_all_protests = find_all_protests;
 module.exports.find_one_protest = find_one_protest;
+module.exports.find_protest_and_update = find_protest_and_update;
