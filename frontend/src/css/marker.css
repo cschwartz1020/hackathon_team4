@@ -1,17 +1,42 @@
-.marker {
+.marker-icon {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 18px;
-    height: 18px;
-    background-color: #000;
-    border: 2px solid #fff;
-    border-radius: 100%;
+    width: 48px;
+    height: 42px;
     user-select: none;
     transform: translate(-50%, -50%);
  
 }
 
-.marker:hover {
+.marker-icon:hover {
     z-index: 1;
   }
+
+.tool-tip2 {
+    z-index: 30;
+    cursor: pointer;
+    color: azure;
+    position: absolute;
+    background-color: rgba(36, 48, 48, 0.884);
+    height: 70px;
+    width: 130px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .7s ease-in-out;
+    top:-110px;
+    left: -62.5px;
+    border-radius: 4px;
+    -webkit-box-shadow: 2px 2px 8px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 2px 8px -1px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 8px -1px rgba(0,0,0,0.75);
+   
+}
+
+.marker-container-protest:hover  .tool-tip2 {
+    z-index: 5;
+    visibility: visible;
+    opacity: 1;
+}
+
+

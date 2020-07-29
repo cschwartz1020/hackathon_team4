@@ -100,13 +100,13 @@ const SimpleMap = ({ markers, clickedMarker, zoom }) => {
         center={center}
         defaultZoom={defaultProps.zoom}
         yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps)}
+        onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps)}
       >
         {markers.map(m =>  // [{lat, lng, title}]
           <Marker
             lat={m.lat}
             lng={m.lng}
-            text={m.title}
+            name={m.title}
           />
         )}
         {/* <Popover>
