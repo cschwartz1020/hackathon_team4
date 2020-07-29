@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   FormControl,
   FormLabel,
@@ -24,7 +25,7 @@ import DateTimePicker from "react-datetime-picker";
 
 export function CreateProtest(props) {
   const [title, setTitle] = useState(undefined);
-  const [desc, setDesc] = useState(undefined);
+  const [desc, setDesc] = useState("");
   const [startLocation, setStartLocation] = useState("");
   const [finalLocation, setFinalLocation] = useState("");
   const [startLocationObj, setStartLocationObj] = useState(undefined);
@@ -57,11 +58,16 @@ export function CreateProtest(props) {
       summary: desc,
       resources: resources,
     };
-    console.log(data);
-    fetch("http://localhost:3000/api/protests", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = axios({
+        method: "post",
+        url: "http://localhost:3000/api/protests",
+        data: data,
+      });
+      console.log('👉 Returned data:',response);
+    } catch (e) {
+      console.log(`😱 Axios request failed: ${e}`);
+    }
   };
 
   const handleStartSelect = async (value) => {
