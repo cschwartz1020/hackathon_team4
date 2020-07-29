@@ -26,29 +26,13 @@ function App() {
                 <Switch>
                     {/* Main route */}
                     {/* exact means this is the first page to load */}
-                    <Route exact path="/">
-                        {/* <SimpleMap/> */}
-                        <Login />
-                    </Route>
-                    <PrivateRoute exact path="/home">
-                        {/* <SimpleMap/> */}
-                        <Home />
-                    </PrivateRoute>
-                    {/* Follow the same structure as above to show your page */}
-                    <PrivateRoute path="/signup">
-                    {/* Replace H1 with component */}
-                        <Signup/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/registration">
-                        <CreateProtest/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/view">
-                        <Protests/>
-                    </PrivateRoute>
-                    <PrivateRoute path="/feed">
-                        <Feed></Feed>
-                    </PrivateRoute>
-                    <PrivateRoute path="*" exact={true}  ><h1>helloo</h1></PrivateRoute>
+                    {!isAuthenticated ? <Route path="/" exact component={Login}/> : null}
+                    <PrivateRoute exact path="/home" component={Home}/>
+                    <PrivateRoute path="/signup" component={Signup}/>
+                    <PrivateRoute path="/registration" component={CreateProtest}/>
+                    <PrivateRoute path="/view" component={Protests}/>
+                    <PrivateRoute path="/feed" component={Feed}/>
+                    <PrivateRoute path="*" exact={true}><h1>helloo</h1></PrivateRoute>
                 </Switch>
             </Router>
         </ThemeProvider>
