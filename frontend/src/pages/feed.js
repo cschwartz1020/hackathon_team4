@@ -1,9 +1,10 @@
-import React, {  useState } from "react"
+import React, { useEffect, useState } from "react"
+import axios from 'axios';
 import "../css/feed.css"
-import pump from "../images/pumpkin.jpg";
 import SimpleMap from "../components/simpleMap"
 
-const array = [1, 2, 3, 4, 5, 6, 7, 8];
+
+
 const protests = [
     {
         description: "For this protest we'll be meeting in Munn Park and walking to Charlotte. Bring signs, water, and masks.",
@@ -26,34 +27,56 @@ const defaultMarker = {
     title: "Example marker"
 };
 
+let toggle = false;
 
 const Feed = props => {
+
+  const [newsData, setNewsData] = useState({});
+
+  useEffect(() => {
+    getNews();
+  }, [])
+  
+  const getNews = () => {
+    fetch('localhost:3000/api/article/30')
+          .then(response => response.json())
+          .then(articles => {
+            //console.log(articles.articles[0]);
+            setNewsData(articles.articles);
+          }).catch(error => console.log(error));
+  }
+
+  const  newsItems = Object.entries(newsData).map(([item, value])  =>  {
+    return (
+      <a href={value.url}>
+      <div className="news-card" key={item}>
+      <div className="left-card-side">
+        <span className="card-head">{value.title}</span>
+        <div className="card-desc">
+          <p>
+            {value.description
+            }
+          </p>
+        </div>
+        <h3>{value.source.name}</h3>
+        <h4>By: {(value.author) ? value.author : value.source.name}</h4>
+      </div>
+      <div className="right-card-side">
+        <img className="news-card-img" src={value.urlToImage} alt="" />
+      </div>
+    </div>
+    </a>
+    );
+});
 
   return (
       <React.Fragment>
         <div className="main">
-        <div className="sec-1">
-          {array.map((item) => (
-            <div className="news-card" key={item}>
-              <div className="left-card-side">
-                <span className="card-head">NEWS</span>
-                <div className="card-desc">
-                  <h3>
-                    John Lewis is first Black lawmaker to lie in state in US
-                    Capitol Rotunda
-                  </h3>
-                </div>
-                <h3>Protest in Alaska</h3>
-                <h4>Posted by Anom1234</h4>
-              </div>
-              <div className="right-card-side">
-                <img className="news-card-img" src={pump} alt="news" />
-              </div>
-            </div>
-          ))}
+        <div className="sec-1">     
+          {(toggle) ? null : newsItems}     
         </div>
         <div className="sec-2">
-        <SimpleMap clickedMarker={defaultMarker} markers={protests}/>
+
         </div>
       </div>
       </React.Fragment>
