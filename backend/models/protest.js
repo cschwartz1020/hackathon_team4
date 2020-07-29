@@ -21,4 +21,5 @@ const protestSchema = new mongoose.Schema({
 });
 
 const Protest = mongoose.model("Protest", protestSchema);
-module.exports = Protest;
+module.exports.Protest = Protest;
+module.exports.protestSchema = protestSchema;
