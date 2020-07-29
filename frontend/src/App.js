@@ -7,36 +7,47 @@ import Protests from './pages/protests/Protests';
 import CreateProtest from './pages/protests/CreateProtest';
 import Feed from "./pages/feed"
 import Home from "./pages/home"
+import PrivateRoute from './components/PrivateRoute'
+import history from "./utils/history";
+import Login from './pages/Login';
+import { useAuth0 } from "./react-auth0-spa";
 
 function App() {
+    const { user, loading, isAuthenticated } = useAuth0();
+
+    console.log('the user is: ', user)
   return (
     <div className="App">
       <ThemeProvider>
         <CSSReset />
-            <Router>
-                <Navbar></Navbar>
+            <Router history={history}>
+                {isAuthenticated ? <Navbar></Navbar> : null}
                 <Switch>
                     {/* Main route */}
                     {/* exact means this is the first page to load */}
                     <Route exact path="/">
                         {/* <SimpleMap/> */}
-                        <Home />
+                        <Login />
                     </Route>
+                    <PrivateRoute exact path="/home">
+                        {/* <SimpleMap/> */}
+                        <Home />
+                    </PrivateRoute>
                     {/* Follow the same structure as above to show your page */}
-                    <Route path="/signup">
+                    <PrivateRoute path="/signup">
                     {/* Replace H1 with component */}
                         <h1>Hi this is a route</h1>
-                    </Route>
-                    <Route path="/registration">
+                    </PrivateRoute>
+                    <PrivateRoute path="/registration">
                         <CreateProtest/>
-                    </Route>
-                    <Route path="/view">
+                    </PrivateRoute>
+                    <PrivateRoute path="/view">
                         <Protests/>
-                    </Route>
-                    <Route path="/feed">
+                    </PrivateRoute>
+                    <PrivateRoute path="/feed">
                         <Feed></Feed>
-                    </Route>
-                    <Route path="*" exact={true}  ><h1>helloo</h1></Route>
+                    </PrivateRoute>
+                    <PrivateRoute path="*" exact={true}  ><h1>helloo</h1></PrivateRoute>
                 </Switch>
             </Router>
         </ThemeProvider>
