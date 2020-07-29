@@ -5,6 +5,7 @@ import Navbar from "./components/navbar"
 import './App.css';
 import Protests from './pages/protests/Protests';
 import CreateProtest from './pages/protests/CreateProtest';
+import Signup from './pages/protests/Signup';
 import Feed from "./pages/feed"
 import Home from "./pages/home"
 import PrivateRoute from './components/PrivateRoute'
@@ -15,7 +16,7 @@ import { useAuth0 } from "./react-auth0-spa";
 function App() {
     const { user, loading, isAuthenticated } = useAuth0();
 
-    console.log('the user is: ', user)
+    // console.log('the user is: ', user)
   return (
     <div className="App">
       <ThemeProvider>
@@ -36,7 +37,7 @@ function App() {
                     {/* Follow the same structure as above to show your page */}
                     <PrivateRoute path="/signup">
                     {/* Replace H1 with component */}
-                        <h1>Hi this is a route</h1>
+                        <Signup/>
                     </PrivateRoute>
                     <PrivateRoute path="/registration">
                         <CreateProtest/>
