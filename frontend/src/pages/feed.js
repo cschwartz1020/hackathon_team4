@@ -38,7 +38,7 @@ const Feed = props => {
   }, [])
   
   const getNews = () => {
-    fetch('https://newsapi.org/v2/everything?q=protest&apiKey=0abc4b1e9c434c94878ff9fb1d4357f9')
+    fetch('localhost:3000/api/article/30')
           .then(response => response.json())
           .then(articles => {
             //console.log(articles.articles[0]);
