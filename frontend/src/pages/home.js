@@ -1,9 +1,7 @@
-import React, {  useState } from "react"
-import "../css/feed.css"
-import pump from "../images/pumpkin.jpg";
+import React from "react"
+import "../css/home.css"
 import SimpleMap2 from "../components/simpleMap2"
 
-const array = [1, 2, 3, 4, 5, 6, 7, 8];
 const protests = [
     {
         description: "For this protest we'll be meeting in Munn Park and walking to Charlotte. Bring signs, water, and masks.",
@@ -31,14 +29,9 @@ const Feed = props => {
 
   return (
       <React.Fragment>
-        <div className="main">
-        <div className="sec-1">
-         
-        </div>
-        <div className="sec-2">
+       <div className="mainx">
         <SimpleMap2 clickedMarker={defaultMarker} markers={protests}/>
         </div>
-      </div>
       </React.Fragment>
   );
 };

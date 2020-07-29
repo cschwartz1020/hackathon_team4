@@ -85,18 +85,7 @@ const SimpleMap2 = ({ markers, clickedMarker, zoom }) => {
                 setIsisCovidDataLoaded(false);
             }
         })
-    },[bounds]);
-
-    useEffect(() => {
-        try{
-        // console.log("covidMarkers: ",covidMarkers.value[0].region.province); 
-        }catch (e){
-        
-    }
-    
-    },[covidMarkers]);
-
-    
+    },[bounds]);    
     
     const defaultProps = {
         center: {

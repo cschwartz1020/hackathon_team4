@@ -2,7 +2,7 @@ import React from 'react';
 import "../css/marker2.css"
 
 const Marker = (props) => {
-    const { color, name ,confirmed} = props;
+    const {  name ,confirmed} = props;
 
 function covidColordetector(confirmedNumber) {
   if(confirmedNumber <100){
