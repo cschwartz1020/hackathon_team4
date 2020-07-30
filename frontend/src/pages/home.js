@@ -31,46 +31,19 @@ const defaultMarker = {
 const Feed = props => {
   const { user } = useAuth0()
 
-  const addUser = async () => {
-    await axios.post('http://localhost:3000/api/users', {
-      firstName: user.given_name,
-      lastName: user.family_name,
-      email: user.email,
-      protests: []
-    }).then(res => {
-      console.log('Added user to DB')
-    })
-  }
-
-  const checkForUser = async () => {
-    let userInDB = false
-
-    await axios.get('http://localhost:3000/api/users/')
-    .then(res => {
-      console.log(res)
-      for (const p of res.data) {
-        if (p.email === user.email) {
-          userInDB = true
-        }
-      }
-    })
-    .then(() => {
-      if (!userInDB) {
-        console.log('going to add the user now :) ')
-        addUser()
-      }
-    })
-  }
-
-  useEffect(() => {
-    // first check to see if they're in the DB
-    // then add them if they're not
-
-    if (user) {
-      checkForUser()
-    }
-
-  }, [user])
+  // useEffect(() => {
+  //   const getToken = async () => {
+  //     try {
+  //       const accessToken = await getTokenSilently({
+  //         audience: `development-protestr-api`,
+  //       });
+  //       console.log(accessToken);
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   getToken();
+  // }, []);
 
   return (
       <React.Fragment>

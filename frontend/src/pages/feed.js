@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react"
 import axios from 'axios';
 import "../css/feed.css"
 import SimpleMap from "../components/simpleMap"
-
-
+import { useAuth0 } from '../react-auth0-spa'
 
 const protests = [
     {
@@ -30,7 +29,7 @@ const defaultMarker = {
 let toggle = false;
 
 const Feed = props => {
-
+  const { user } = useAuth0()
   const [newsData, setNewsData] = useState({});
 
   useEffect(() => {
@@ -45,6 +44,47 @@ const Feed = props => {
             console.log(response);
          })
   }
+
+  const addUser = async () => {
+    await axios.post('http://localhost:3000/api/users', {
+      firstName: user.given_name,
+      lastName: user.family_name,
+      email: user.email,
+      protests: []
+    }).then(res => {
+      console.log('Added user to DB')
+    })
+  }
+
+  const checkForUser = async () => {
+    let userInDB = false
+
+    await axios.get('http://localhost:3000/api/users/')
+    .then(res => {
+      console.log(res)
+      for (const p of res.data) {
+        if (p.email === user.email) {
+          userInDB = true
+        }
+      }
+    })
+    .then(() => {
+      if (!userInDB) {
+        console.log('going to add the user now :) ')
+        addUser()
+      }
+    })
+  }
+
+  useEffect(() => {
+    // first check to see if they're in the DB
+    // then add them if they're not
+
+    if (user) {
+      checkForUser()
+    }
+
+  }, [user])
 
   const  newsItems = Object.entries(newsData).map(([item, value])  =>  {
     return (

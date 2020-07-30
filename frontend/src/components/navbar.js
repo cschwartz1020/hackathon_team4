@@ -56,16 +56,10 @@ const Navbar = (props) => {
             <MenuItems>Home</MenuItems>
           </Link>
           <Link to="/registration">
-            <MenuItems>Registration</MenuItems>
-          </Link>
-          <Link to="/signup">
-            <MenuItems>Sign up</MenuItems>
+            <MenuItems>Create</MenuItems>
           </Link>
           <Link to="/view">
             <MenuItems>View</MenuItems>
-          </Link>
-          <Link to="/feed">
-            <MenuItems>Feed</MenuItems>
           </Link>
         </Box>
 
@@ -73,21 +67,18 @@ const Navbar = (props) => {
           display={{ sm: show ? "block" : "none", md: "block" }}
           mt={{ base: 4, md: 0 }}
         >
-          <Button bg="transparent" border="1px">
-            This is Cool
-          </Button>
           <Link to="/account">
-          <Button
-            bg="transparent"
-            border="1px"
-            _hover={{ bg: "#008B8B" }}
-            _active={{
-              transform: "scale(0.98)",
-              borderColor: "teal",
-            }}
-          >
-            Account
-          </Button>
+            <Button
+              bg="transparent"
+              border="1px"
+              _hover={{ bg: "#008B8B" }}
+              _active={{
+                transform: "scale(0.98)",
+                borderColor: "teal",
+              }}
+            >
+              Account
+            </Button>
           </Link>
         </Box>
       </Flex>
