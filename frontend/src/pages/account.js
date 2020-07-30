@@ -57,24 +57,43 @@ export function Account(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [protestClickedTime, setProtestClickedTime] = useState("10:00");
   const [protestClicked, setProtestClicked] = useState(defaultProtest[0]);
-  const { user, loading } = useAuth0();
+  const [token, setToken] = useState(undefined);
+  const { user, loading, getTokenSilently } = useAuth0();
   const { onClose } = useDisclosure();
+
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const accessToken = await getTokenSilently({
+          audience: `development-protestr-api`,
+        });
+        setToken(accessToken);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getToken();
+  }, []);
 
   useEffect(() => {
     const getUserProtests = async () => {
       // first find the user in the db and save all of their protests they're signed up for
       await axios
-        .get(`http://localhost:3000/api/users/email/${user.email}`)
+        .get(`http://localhost:3000/api/users/email/${user.email}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => {
           setProtests(res.data[0].protests);
           setProtestClicked(res.data[0].protests[0]);
         });
     };
 
-    if (user) {
+    if (user && token) {
       getUserProtests();
     }
-  }, [user]);
+  }, [user, token]);
 
   const search = (id) => {
     for (var i = 0; i < protests.length; i++) {
@@ -157,60 +176,63 @@ export function Account(props) {
         <Heading as="h2" size="md" margin="3%">
           My Events
         </Heading>
-        {
-          protests.length > 0 ? 
+        {protests.length > 0 ? (
           <>
-          <div>
-          {protests.map((p) => (
-            <Box borderWidth="3px" margin="2%" rounded="lg">
-              <ProtestCard
-                onAddClick={() => console.log("")}
-                protest={p}
-                isClicked={protestClicked._id === p._id ? true : false}
-                onCardClick={onCardClick}
-                openModal={openModal}
-                attending={true}
-              />
-            </Box>
-          ))}
-        </div>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader fontSize="24px">{protestClicked.title}</ModalHeader>
-            <ModalBody>
-              <Text fontSize="18px" fontWeight="bold">
-                Start Location: {protestClicked.startLocation[0].location.city}
-              </Text>
-            </ModalBody>
-            <ModalBody>
-              <Text fontSize="18px" fontWeight="bold">
-                End Location: {protestClicked.endLocation[0].location.city}
-              </Text>
-            </ModalBody>
-            <ModalBody fontSize="16px" fontWeight="bold">
-              When: {protestClickedTime}
-            </ModalBody>
-            <ModalBody>
-              <h2>{protestClicked.summary}</h2>
-            </ModalBody>
-            <ModalBody>
-              <h2>Resources needed: {getResources()}</h2>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                variantColor="blue"
-                mr={3}
-                onClick={() => setIsOpen(false)}
-              >
-                Close
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal> 
-        </>
-        : <h1>You haven't signed up for any protests!</h1>
-      }
+            <div>
+              {protests.map((p) => (
+                <Box borderWidth="3px" margin="2%" rounded="lg">
+                  <ProtestCard
+                    onAddClick={() => console.log("")}
+                    protest={p}
+                    isClicked={protestClicked._id === p._id ? true : false}
+                    onCardClick={onCardClick}
+                    openModal={openModal}
+                    attending={true}
+                  />
+                </Box>
+              ))}
+            </div>
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader fontSize="24px">
+                  {protestClicked.title}
+                </ModalHeader>
+                <ModalBody>
+                  <Text fontSize="18px" fontWeight="bold">
+                    Start Location:{" "}
+                    {protestClicked.startLocation[0].location.city}
+                  </Text>
+                </ModalBody>
+                <ModalBody>
+                  <Text fontSize="18px" fontWeight="bold">
+                    End Location: {protestClicked.endLocation[0].location.city}
+                  </Text>
+                </ModalBody>
+                <ModalBody fontSize="16px" fontWeight="bold">
+                  When: {protestClickedTime}
+                </ModalBody>
+                <ModalBody>
+                  <h2>{protestClicked.summary}</h2>
+                </ModalBody>
+                <ModalBody>
+                  <h2>Resources needed: {getResources()}</h2>
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    variantColor="blue"
+                    mr={3}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Close
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </>
+        ) : (
+          <h1>You haven't signed up for any protests!</h1>
+        )}
       </Box>
     </div>
   );
