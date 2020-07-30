@@ -75,6 +75,7 @@ const Protests = () => {
               let words = res.data.results[0].formatted_address.split(',')
               city = words[1]
               setUserCity(city)
+              console.log('user is in ', city)
 
               for (const protest of protests) {
                 if (protest.startLocation[0].location.city.trim() === city.trim()) {
@@ -85,6 +86,8 @@ const Protests = () => {
             setLocalProtests(userLocalProtests)
         })
     }
+
+    console.log(userCoord)
 
     useEffect(() => {
         const getProtests = async () => {
@@ -149,6 +152,12 @@ const Protests = () => {
         return temp
     }
 
+    const signUpForProtest = async () => {
+        // first find the user in the db and save all of their protests they're signed up for
+        //await axios.get()
+
+    }
+
     console.log(protests)
 
     return (
@@ -163,12 +172,12 @@ const Protests = () => {
                     { onlyLocalProtests ? 
                         localProtests.map(p => 
                             <div>
-                                <ProtestCard protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal}/>
+                                <ProtestCard protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal} visibleAdd={true}/>
                             </div>
                         ) : (
                         protests.map(p => 
                             <div>
-                                <ProtestCard protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal}/>
+                                <ProtestCard protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal} visibleAdd={true}/>
                             </div>
                         ))
                     }

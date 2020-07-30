@@ -1,21 +1,21 @@
-import React from 'react';
-import '../css/navbar.css';
-import { Box, Heading, Flex, Text, Button } from "@chakra-ui/core";
+import React from "react";
+import "../css/navbar.css";
+import { Box, Heading, Flex, Text, Button, PseudoBox } from "@chakra-ui/core";
 import { Link } from "react-router-dom";
 
 const MenuItems = ({ children }) => (
-    <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
-      {children}
-    </Text>
-  );
-  
-  // Note: This code could be better, so I'd recommend you to understand how I solved and you could write yours better :)
-  const Navbar = props => {
-    const [show, setShow] = React.useState(false);
-    const handleToggle = () => setShow(!show);
-  
-    return (
-      <React.Fragment>
+  <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
+    {children}
+  </Text>
+);
+
+// Note: This code could be better, so I'd recommend you to understand how I solved and you could write yours better :)
+const Navbar = (props) => {
+  const [show, setShow] = React.useState(false);
+  const handleToggle = () => setShow(!show);
+
+  return (
+    <React.Fragment>
       <Flex
         className="navagation-b"
         as="nav"
@@ -29,10 +29,10 @@ const MenuItems = ({ children }) => (
       >
         <Flex align="center" mr={5}>
           <Heading as="h1" size="lg" letterSpacing={"-.1rem"}>
-            Protestapp
+            Protestr
           </Heading>
         </Flex>
-  
+
         <Box display={{ base: "block", md: "none" }} onClick={handleToggle}>
           <svg
             className="hamburger"
@@ -45,7 +45,7 @@ const MenuItems = ({ children }) => (
             <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
           </svg>
         </Box>
-  
+
         <Box
           display={{ sm: show ? "block" : "none", md: "flex" }}
           width={{ sm: "full", md: "auto" }}
@@ -53,22 +53,22 @@ const MenuItems = ({ children }) => (
           flexGrow={1}
         >
           <Link to="/">
-          <MenuItems>Home</MenuItems>
+            <MenuItems>Home</MenuItems>
           </Link>
           <Link to="/registration">
-          <MenuItems>Registration</MenuItems>
+            <MenuItems>Registration</MenuItems>
           </Link>
           <Link to="/signup">
-          <MenuItems>Sign up</MenuItems>
+            <MenuItems>Sign up</MenuItems>
           </Link>
           <Link to="/view">
-          <MenuItems>View</MenuItems>
+            <MenuItems>View</MenuItems>
           </Link>
           <Link to="/feed">
-          <MenuItems>Feed</MenuItems>
+            <MenuItems>Feed</MenuItems>
           </Link>
         </Box>
-  
+
         <Box
           display={{ sm: show ? "block" : "none", md: "block" }}
           mt={{ base: 4, md: 0 }}
@@ -76,11 +76,24 @@ const MenuItems = ({ children }) => (
           <Button bg="transparent" border="1px">
             This is Cool
           </Button>
+          <Link to="/account">
+          <Button
+            bg="transparent"
+            border="1px"
+            _hover={{ bg: "#008B8B" }}
+            _active={{
+              transform: "scale(0.98)",
+              borderColor: "teal",
+            }}
+          >
+            Account
+          </Button>
+          </Link>
         </Box>
       </Flex>
-      <div className="v-spacer"/>
-      </React.Fragment>
-    );
-  };
-  
-  export default Navbar;
+      <div className="v-spacer" />
+    </React.Fragment>
+  );
+};
+
+export default Navbar;

@@ -8,6 +8,7 @@ import CreateProtest from './pages/protests/CreateProtest';
 import Signup from './pages/protests/Signup';
 import Feed from "./pages/feed"
 import Home from "./pages/home"
+import Account from "./pages/account"
 import PrivateRoute from './components/PrivateRoute'
 import history from "./utils/history";
 import Login from './pages/Login';
@@ -32,6 +33,7 @@ function App() {
                     <PrivateRoute path="/registration" component={CreateProtest}/>
                     <PrivateRoute path="/view" component={Protests}/>
                     <PrivateRoute path="/feed" component={Feed}/>
+                    <PrivateRoute path="/account" component={Account}/>
                     <PrivateRoute path="*" exact={true}><h1>helloo</h1></PrivateRoute>
                 </Switch>
             </Router>
