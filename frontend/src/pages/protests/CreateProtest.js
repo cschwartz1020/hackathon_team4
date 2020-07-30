@@ -11,6 +11,7 @@ import {
   Heading,
   InputRightElement,
   InputGroup,
+  useToast,
 } from "@chakra-ui/core";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -28,17 +29,39 @@ export function CreateProtest(props) {
   const [newResource, setNewResource] = useState(undefined);
   const [resources, setResources] = useState(["face masks", "water bottles"]);
   const [datetime, setDateTime] = useState(new Date());
+  const toast = useToast();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!title) {
-      alert("'Title' is a required field.");
+      toast({
+        position: "top",
+        title: "Required Field.",
+        description: "'Event Title' is a required field.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return;
     } else if (!startLocation) {
-      alert("'Start Location' is a required field.");
+      toast({
+        position: "top",
+        title: "Required Field.",
+        description: "'Start Location' is a required field.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return;
     } else if (!finalLocation) {
-      alert("'Final Location' is a required field.");
+      toast({
+        position: "top",
+        title: "Required Field.",
+        description: "'Final Location' is a required field.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return;
     }
     const datetimeStr = getDatetimeStr(datetime);
@@ -223,6 +246,9 @@ export function CreateProtest(props) {
       <Heading as="h1" size="xl" marginTop="3%">
         Register Your Event
       </Heading>
+      <Heading as="h1" size="md">
+        ✊🏿✊🏾✊🏽✊🏼✊🏻
+      </Heading>
       <Box
         margin="auto"
         maxW="xl"
@@ -291,11 +317,11 @@ export function CreateProtest(props) {
             >
               {makeCheckboxItems()}
             </CheckboxGroup>
-            <InputGroup size="md">
+            <InputGroup marginTop="3%" size="md">
               <Input
                 focusBorderColor="teal.400"
                 id="addresource"
-                placeholder="Resource"
+                placeholder="Add resource"
                 onChange={handleNewResourceChange}
               />
               <InputRightElement width="4.5rem">
