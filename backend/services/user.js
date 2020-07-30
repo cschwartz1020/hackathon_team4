@@ -46,10 +46,8 @@ async function findByIdAndUpdate(req, res) {
     { new: true },
     (err, user) => {
       if (err) {
-        return res.status(500).send({
-          message:
-            err.message ||
-            `Some error occurred while updating user with ID ${req.params.id}`,
+        return res.status(400).send({
+          message: err.message || `Can't find user with ID ${req.params.id}`,
         });
       }
       return res.send(user);
@@ -57,7 +55,39 @@ async function findByIdAndUpdate(req, res) {
   );
 }
 
+async function findByEmailAndUpdate(req, res) {
+  await db.User.findOneAndUpdate(
+    { email: req.params.email },
+    req.body,
+    { new: true },
+    (err, user) => {
+      if (err) {
+        return res.status(400).send({
+          message:
+            err.message || `Can't find user with email ${req.params.email}`,
+        });
+      }
+      return res.status(200).json(user);
+    }
+  );
+}
+
+async function findByEmail(req, res) {
+  await db.User.find({ email: req.params.email }, function (err, user) {
+    if (err) {
+      res.status(400).send({
+        message:
+          err.message || `Can't find user with email ${req.params.email} `,
+      });
+      return;
+    }
+    return res.status(200).json(user);
+  });
+}
+
 module.exports.create = create;
 module.exports.findAll = findAll;
 module.exports.findOne = findOne;
 module.exports.findByIdAndUpdate = findByIdAndUpdate;
+module.exports.findByEmail = findByEmail;
+module.exports.findByEmailAndUpdate = findByEmailAndUpdate;
