@@ -152,10 +152,11 @@ const Protests = () => {
         return temp
     }
 
-    const signUpForProtest = async () => {
+    const signUpForProtest = async (protest) => {
         // first find the user in the db and save all of their protests they're signed up for
         //await axios.get()
 
+        console.log(protest)
     }
 
     console.log(protests)
@@ -172,12 +173,12 @@ const Protests = () => {
                     { onlyLocalProtests ? 
                         localProtests.map(p => 
                             <div>
-                                <ProtestCard protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal} visibleAdd={true}/>
+                                <ProtestCard onAddClick={signUpForProtest} protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal} visibleAdd={true}/>
                             </div>
                         ) : (
                         protests.map(p => 
                             <div>
-                                <ProtestCard protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal} visibleAdd={true}/>
+                                <ProtestCard onAddClick={signUpForProtest} protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal} visibleAdd={true}/>
                             </div>
                         ))
                     }

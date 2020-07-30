@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
 import { Box, IconButton, Text } from "@chakra-ui/core";
 
-const Protest = ({ protest, isClicked, onCardClick, openModal, visibleAdd }) => {
+const Protest = ({ protest, isClicked, onCardClick, openModal, visibleAdd, onAddClick }) => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let date = new Date(Date.parse(protest.time));
 
@@ -30,7 +30,7 @@ const Protest = ({ protest, isClicked, onCardClick, openModal, visibleAdd }) => 
                 {
                     visibleAdd ? (
                     <Box>
-                        <IconButton icon="add" size="lg" color="white" variantColor="teal" aria-label="get info"/>
+                        <IconButton icon="add" size="lg" color="white" variantColor="teal" aria-label="get info" onClick={() => onAddClick(protest)}/>
                     </Box> ) : null
                 }
                 <Box
