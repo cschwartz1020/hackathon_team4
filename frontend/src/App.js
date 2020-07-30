@@ -26,11 +26,10 @@ function App() {
                 <Switch>
                     {/* Main route */}
                     {/* exact means this is the first page to load */}
-                    {!isAuthenticated ? <Route path="/" exact component={Login}/> : <PrivateRoute exact path="/" component={Home}/>}
-                    <PrivateRoute exact path="/home" component={Home}/>
+                    {!isAuthenticated ? <Route path="/" exact component={Login}/> : <PrivateRoute exact path="/" component={Feed}/>}
+                    <PrivateRoute exact path="/home" component={Feed}/>
                     <PrivateRoute path="/registration" component={CreateProtest}/>
                     <PrivateRoute path="/view" component={Protests}/>
-                    <PrivateRoute path="/feed" component={Feed}/>
                     <PrivateRoute path="/account" component={Account}/>
                     <PrivateRoute path="*" exact={true}><h1>helloo</h1></PrivateRoute>
                 </Switch>

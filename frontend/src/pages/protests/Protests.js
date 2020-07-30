@@ -18,6 +18,7 @@ import {
 import SimpleMap from '../../components/simpleMap'
 import ProtestCard from '../../components/ProtestCard'
 import '../../css/protests.css'
+import { useAuth0 } from '../../react-auth0-spa'
 
 const defaultProtest = [{
     summary: "For this protest we'll be meeting in Munn Park and walking to Charlotte. Bring signs, water, and masks.",
@@ -44,6 +45,7 @@ const defaultProtest = [{
     title: "Protest Against Police Brutality",
     resources: ["masks", "water"],
     id: 1,
+    attending: false
 }];
 
 const defaultMarker = [{
@@ -59,6 +61,8 @@ const Protests = () => {
     const [localProtests, setLocalProtests] = useState(defaultProtest)
     const [protests, setProtests] = useState(defaultProtest)
     const [onlyLocalProtests, setOnlyLocalProtests] = useState(false)
+    //const [userProtests, setUserProtests] = useState(defaultProtest)
+    const { user } = useAuth0()
 
     const getUserCoords = async () => {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -87,13 +91,37 @@ const Protests = () => {
         })
     }
 
-    console.log(userCoord)
-
     useEffect(() => {
-        const getProtests = async () => {
+        const getUserProtests = async () => {
+            let userProtestsTemp = []
+            await axios.get(`http://localhost:3000/api/users/email/${user.email}`)
+            .then(res => {
+                userProtestsTemp = res.data[0].protests
+                //setUserProtests(res.data[0].protests)
+            })
+            .then(() => {
+                getProtests(userProtestsTemp)
+            })
+        }
+
+        const getProtests = async (userProtests) => {
             await axios.get('http://localhost:3000/api/protests/')
             .then(res => {
-                setProtests(res.data)
+                let userSpecificProtests = [];
+                console.log('checking against ', userProtests)
+
+                for (const p of res.data) {
+                    p.attending = false;
+                    for (const u of userProtests) {
+                        if (p._id === u._id) {
+                            console.log('the user is attending this protest! ', p.startLocation[0].location.city, ' === ', u.startLocation[0].location.city)
+                            p.attending = true
+                        }
+                    }
+                    userSpecificProtests.push(p)
+                }
+                console.log(userSpecificProtests)
+                setProtests(userSpecificProtests)
                 setProtestClicked(res.data[0])
                 let tempMarkers = [];
                 for (const m of res.data) {
@@ -107,8 +135,14 @@ const Protests = () => {
             })
         }
         
-        getProtests()
-    }, [])
+        if (user) {
+            console.log('The user is: ', user)
+            getUserProtests()
+        }
+
+    }, [user])
+
+    console.log('All of the protests are: ', protests)
 
     useEffect(() => {
         getUserCoords()
@@ -152,13 +186,42 @@ const Protests = () => {
         return temp
     }
 
-    const signUpForProtest = async () => {
+    const checkIfUserHasProtest = async (protest) => {
+        let hasProtest = false;
+        let userProtests;
         // first find the user in the db and save all of their protests they're signed up for
-        //await axios.get()
+        await axios.get(`http://localhost:3000/api/users/email/${user.email}`)
+        .then(res => {
+            userProtests = res.data[0].protests;
+            console.log('the user has ', userProtests)
+            for (const p of userProtests) {
+                if (p._id === protest._id) {
+                    hasProtest = true
+                }
+            }
 
+            if (!hasProtest) {
+                userProtests.push(protest)
+                addProtest(userProtests);
+            }
+        })
     }
 
-    console.log(protests)
+    const addProtest = async (userProtests) => {
+        await axios.put(`http://localhost:3000/api/users/email/${user.email}`, {protests: userProtests})
+        .then(res => {
+            console.log('success')
+            window.location.reload();
+        })
+    }
+
+    const signUpForProtest = async (protest) => {
+        checkIfUserHasProtest(protest)
+
+        console.log(protest)
+    }
+
+    //console.log(protests)
 
     return (
         <div className="protests">
@@ -172,12 +235,12 @@ const Protests = () => {
                     { onlyLocalProtests ? 
                         localProtests.map(p => 
                             <div>
-                                <ProtestCard protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal} visibleAdd={true}/>
+                                <ProtestCard onAddClick={signUpForProtest} protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal} attending={p.attending}/>
                             </div>
                         ) : (
                         protests.map(p => 
                             <div>
-                                <ProtestCard protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal} visibleAdd={true}/>
+                                <ProtestCard onAddClick={signUpForProtest} protest={p} isClicked={protestClicked._id === p._id ? true : false} onCardClick={onCardClick} openModal={openModal} attending={p.attending}/>
                             </div>
                         ))
                     }
