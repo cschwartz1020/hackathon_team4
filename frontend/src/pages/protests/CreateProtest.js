@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   FormControl,
@@ -19,6 +19,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from "react-places-autocomplete";
 import DateTimePicker from "react-datetime-picker";
+import { useAuth0 } from "../../react-auth0-spa";
 
 export function CreateProtest(props) {
   const [title, setTitle] = useState(undefined);
@@ -34,8 +35,24 @@ export function CreateProtest(props) {
     "water bottles",
   ]);
   const [datetime, setDateTime] = useState(new Date());
+  const [token, setToken] = useState(undefined);
+
   const toast = useToast();
 
+  const { getTokenSilently } = useAuth0();
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const accessToken = await getTokenSilently({
+          audience: `development-protestr-api`,
+        });
+        setToken(accessToken);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getToken();
+  }, []);
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!title) {
@@ -87,6 +104,9 @@ export function CreateProtest(props) {
         method: "post",
         url: "http://localhost:3000/api/protests",
         data: data,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       console.log("👉 Returned data:", response);
       toast({
