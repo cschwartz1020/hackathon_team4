@@ -61,9 +61,6 @@ const Navbar = (props) => {
           <Link to="/view">
             <MenuItems>View</MenuItems>
           </Link>
-          <Link to="/feed">
-            <MenuItems>Feed</MenuItems>
-          </Link>
         </Box>
 
         <Box
