@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MarkerLegend from "../../components/markerLegend";
 

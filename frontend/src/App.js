@@ -6,7 +6,6 @@ import './App.css';
 import Protests from './pages/protests/Protests';
 import CreateProtest from './pages/protests/CreateProtest';
 import Feed from "./pages/feed"
-import Home from "./pages/home"
 import Account from "./pages/account"
 import PrivateRoute from './components/PrivateRoute'
 import history from "./utils/history";
@@ -14,7 +13,7 @@ import Login from './pages/Login';
 import { useAuth0 } from "./react-auth0-spa";
 
 function App() {
-    const { user, loading, isAuthenticated } = useAuth0();
+    const { isAuthenticated } = useAuth0();
 
     // console.log('the user is: ', user)
   return (
