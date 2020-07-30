@@ -81,7 +81,6 @@ const Protests = () => {
               let words = res.data.results[0].formatted_address.split(',')
               city = words[1]
               setUserCity(city)
-              console.log('user is in ', city)
 
               for (const protest of protests) {
                 if (protest.startLocation[0].location.city.trim() === city.trim()) {
@@ -110,19 +109,16 @@ const Protests = () => {
             await axios.get('http://localhost:3000/api/protests/')
             .then(res => {
                 let userSpecificProtests = [];
-                console.log('checking against ', userProtests)
 
                 for (const p of res.data) {
                     p.attending = false;
                     for (const u of userProtests) {
                         if (p._id === u._id) {
-                            console.log('the user is attending this protest! ', p.startLocation[0].location.city, ' === ', u.startLocation[0].location.city)
                             p.attending = true
                         }
                     }
                     userSpecificProtests.push(p)
                 }
-                console.log(userSpecificProtests)
                 setProtests(userSpecificProtests)
                 setProtestClicked(res.data[0])
                 let tempMarkers = [];
@@ -138,13 +134,10 @@ const Protests = () => {
         }
         
         if (user) {
-            console.log('The user is: ', user)
             getUserProtests()
         }
 
     }, [user])
-
-    console.log('All of the protests are: ', protests)
 
     useEffect(() => {
         getUserCoords()
@@ -195,7 +188,6 @@ const Protests = () => {
         await axios.get(`http://localhost:3000/api/users/email/${user.email}`)
         .then(res => {
             userProtests = res.data[0].protests;
-            console.log('the user has ', userProtests)
             for (const p of userProtests) {
                 if (p._id === protest._id) {
                     hasProtest = true
@@ -212,7 +204,6 @@ const Protests = () => {
     const addProtest = async (userProtests) => {
         await axios.put(`http://localhost:3000/api/users/email/${user.email}`, {protests: userProtests})
         .then(res => {
-            console.log('success')
             window.location.reload();
         })
     }
