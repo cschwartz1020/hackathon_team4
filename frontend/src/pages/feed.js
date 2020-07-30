@@ -48,12 +48,12 @@ const Feed = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(`news ${token}`);
-    getNews();
+    if (token) {
+      getNews();
+    }
   }, [token]);
 
   const getNews = () => {
-    console.log(`getNews ${token}`);
     axios
       .get("http://localhost:3000/api/article/35", {
         headers: {
@@ -117,8 +117,7 @@ const Feed = (props) => {
     // first check to see if they're in the DB
     // then add them if they're not
 
-    if (user) {
-      console.log(`user ${token}`);
+    if (user && token) {
       checkForUser();
     }
   }, [user, token]);
