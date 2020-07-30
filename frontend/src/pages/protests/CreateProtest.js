@@ -205,6 +205,11 @@ export function CreateProtest(props) {
     return resourcesList;
   };
 
+  const options = {
+    types: ['address'],
+    componentRestrictions: {country: 'us'}
+    }
+
   const getLocationDiv = (
     placeholder,
     setterMethod,
@@ -216,6 +221,7 @@ export function CreateProtest(props) {
         value={initialValue}
         onChange={setterMethod}
         onSelect={selecterMethod}
+        options={options}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
@@ -245,7 +251,7 @@ export function CreateProtest(props) {
   return (
     <div>
       <Heading as="h1" size="xl" marginTop="3%">
-        Register Your Event
+        Create an Event
       </Heading>
       <Heading as="h1" size="md">
         ✊🏿✊🏾✊🏽✊🏼✊🏻

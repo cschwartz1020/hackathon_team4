@@ -56,7 +56,7 @@ const Navbar = (props) => {
             <MenuItems>Home</MenuItems>
           </Link>
           <Link to="/registration">
-            <MenuItems>Registration</MenuItems>
+            <MenuItems>Create</MenuItems>
           </Link>
           <Link to="/view">
             <MenuItems>View</MenuItems>
