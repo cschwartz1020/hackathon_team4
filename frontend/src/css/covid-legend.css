@@ -1,0 +1,55 @@
+.legend-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-box-shadow: 1px 1px 5px 0px rgba(66,66,66,1);
+    -moz-box-shadow: 1px 1px 5px 0px rgba(66,66,66,1);
+    box-shadow: 1px 1px 5px 0px rgba(66,66,66,1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.legend-container h1 {
+   font-size: 25px;
+   margin: 0 0 10px;
+   font-weight: 600;
+   color: rgb(59, 72, 82);
+   text-align: left;
+}
+
+.legend-container h4 {
+   
+    margin: 20px 0;
+   
+ }
+
+.legend-container img {
+    width: 100%;
+    max-height: 60px;
+
+ }
+
+ .covid-container-data {
+     padding: 10px 20px;
+ }
+ .flex-row {
+     display: flex;
+     align-items: center;
+     padding: 10px 0;
+     border-bottom: 1px solid rgb(228, 228, 228);
+ }
+
+
+ .marker-legend {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    user-select: none;
+    background-color: blue;
+    border-radius: 100%;
+    border: 2px solid rgb(196, 196, 196);
+    margin-right: 20px;
+    opacity: .7;
+    -webkit-box-shadow: 1px 1px 5px 0px rgba(66,66,66,1);
+    -moz-box-shadow: 1px 1px 5px 0px rgba(66,66,66,1);
+    box-shadow: 1px 1px 5px 0px rgba(66,66,66,1);
+}
+

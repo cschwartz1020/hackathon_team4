@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect } from "react"
 import axios from 'axios';
+import MarkerLegend from "../../components/markerLegend"
+
 import {
     Modal,
     ModalOverlay,
@@ -163,7 +165,10 @@ const Protests = () => {
     return (
         <div className="protests">
             <div className="row">
-                <div className="leftcolumn"><SimpleMap clickedMarker={{lat: protestClicked.startLocation[0].location.latitude, lng: protestClicked.startLocation[0].location.longitude, title: protestClicked.title}} markers={markers}/></div>
+                <div className="leftcolumn">
+                    <SimpleMap clickedMarker={{lat: protestClicked.startLocation[0].location.latitude, lng: protestClicked.startLocation[0].location.longitude, title: protestClicked.title}} markers={markers}/>
+                    <MarkerLegend/>
+                </div>
                 <div className="rightcolumn">
                     <Flex justify="center" align="center">
                         <FormLabel htmlFor="protest-type">Local Protests Only</FormLabel>
