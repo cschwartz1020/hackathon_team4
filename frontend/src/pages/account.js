@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios'
+import axios from "axios";
 import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Button,
-  ButtonGroup,
   Input,
   Box,
   Heading,
@@ -18,10 +13,11 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  Button,
   Text,
   useDisclosure,
-  Spinner
+  Spinner,
+  Avatar,
+  FormHelperText,
 } from "@chakra-ui/core";
 import ProtestCard from "../components/ProtestCard";
 import { useAuth0 } from "../react-auth0-spa";
@@ -57,77 +53,60 @@ const defaultProtest = [
 ];
 
 export function Account(props) {
-  const [pastProtests, setPastProtests] = useState(defaultProtest);
-  const [upcomingProtests, setUpcomingProtests] = useState(defaultProtest);
   const [protests, setProtests] = useState(defaultProtest);
   const [isOpen, setIsOpen] = useState(false);
-  const [protestClickedTime, setProtestClickedTime] = useState('10:00');
-  const [protestClicked, setProtestClicked] = useState(defaultProtest[0])
-  const { user, loading } = useAuth0()
+  const [protestClickedTime, setProtestClickedTime] = useState("10:00");
+  const [protestClicked, setProtestClicked] = useState(defaultProtest[0]);
+  const { user, loading } = useAuth0();
   const { onClose } = useDisclosure();
 
   useEffect(() => {
     const getUserProtests = async () => {
       // first find the user in the db and save all of their protests they're signed up for
-      await axios.get(`http://localhost:3000/api/users/email/${user.email}`)
-      .then(res => {
-        setProtests(res.data[0].protests)
-        setProtestClicked(res.data[0].protests[0])
-      })
-    }
+      await axios
+        .get(`http://localhost:3000/api/users/email/${user.email}`)
+        .then((res) => {
+          setProtests(res.data[0].protests);
+          setProtestClicked(res.data[0].protests[0]);
+        });
+    };
 
     if (user) {
-      getUserProtests()
+      getUserProtests();
     }
-  }, [user])
+  }, [user]);
 
-  const searchPast = (id) => {
-    for (var i = 0; i < pastProtests.length; i++) {
-      if (pastProtests[i]._id === id) {
-        return pastProtests[i];
-      }
-    }
-  };
-
-  const searchUpcoming = (id) => {
-    for (var i = 0; i < upcomingProtests.length; i++) {
-      if (upcomingProtests[i]._id === id) {
-        return upcomingProtests[i];
+  const search = (id) => {
+    for (var i = 0; i < protests.length; i++) {
+      if (protests[i]._id === id) {
+        return protests[i];
       }
     }
   };
 
   const onCardClick = (id) => {
-    setProtestClicked(search(id))
-}
+    setProtestClicked(search(id));
+  };
 
   const getResources = () => {
-    let temp = '';
+    let temp = "";
 
     protestClicked.resources.map((r, index) => {
-        temp += r
-        let c = index === protestClicked.resources.length - 1 ? '' : ', '
-        temp += c
-    })
+      temp += r;
+      let c = index === protestClicked.resources.length - 1 ? "" : ", ";
+      temp += c;
+    });
 
-    return temp
-  }
+    return temp;
+  };
 
   const openModal = (time) => {
     setProtestClickedTime(time);
     setIsOpen(true);
   };
 
-  const onCardClickPast = (id) => {
-    setProtestClicked(searchPast(id));
-  };
-
-  const onCardClickUpcoming = (id) => {
-    setProtestClicked(searchUpcoming(id));
-  };
-
   if (loading || !user) {
-    return <Spinner size="xl"/>;
+    return <Spinner size="xl" />;
   }
 
   return (
@@ -142,103 +121,88 @@ export function Account(props) {
         rounded="lg"
         overflow="hidden"
         marginTop="2%"
-        marginBottom="5%"
       >
-        <InputGroup marginTop="3%" marginBottom="3%" size="md">
-          <InputLeftAddon children="username" fontWeight="semibold" />
-          <Input isReadOnly={true} value="sharvey" roundedLeft="0" />
+        <Heading as="h2" size="md" margin="3%">
+          My Info
+        </Heading>
+        <Avatar name="userpicture" src={user.picture} size="xl" />
+        <InputGroup margin="2%" size="sm">
+          <InputLeftAddon children="name" fontWeight="semibold" />
+          <Input
+            isReadOnly={true}
+            value={user.given_name + " " + user.family_name}
+            roundedLeft="0"
+          />
         </InputGroup>
-        <Box borderWidth="3px" margin="2%">
-          <Heading as="h2" size="md" marginBottom="3%">
-            My Upcoming Events
-          </Heading>
-          <div>
-            <ProtestCard
-              protest={upcomingProtests[0]}
-              isClicked={protestClicked._id === upcomingProtests[0]._id ? true : false}
-              onCardClick={onCardClickUpcoming}
-              openModal={openModal}
-            />
-          </div>
-          <ButtonGroup spacing={4} margin="2%">
-            <Button leftIcon="arrow-back" variantColor="teal" variant="solid">
-              Prev
-            </Button>
-            <Button
-              rightIcon="arrow-forward"
-              variantColor="teal"
-              variant="solid"
-            >
-              Next
-            </Button>
-          </ButtonGroup>
-        </Box>
-        <Box borderWidth="3px" margin="2%" marginTop="5%">
-          <Heading as="h2" size="md" marginBottom="3%">
-            My Past Events
-          </Heading>
-          <div>
-            <ProtestCard
-              protest={pastProtests[0]}
-              isClicked={protestClicked._id === pastProtests[0]._id ? true : false}
-              onCardClick={onCardClickPast}
-              openModal={openModal}
-            />
-          </div>
-          <ButtonGroup spacing={4} margin="2%">
-            <Button leftIcon="arrow-back" variantColor="teal" variant="solid">
-              Prev
-            </Button>
-            <Button
-              rightIcon="arrow-forward"
-              variantColor="teal"
-              variant="solid"
-            >
-              Next
-            </Button>
-          </ButtonGroup>
-        </Box>
-          <Input isReadOnly="false" value={user.nickname} roundedLeft="0" />
-        <Heading as="h2" size="md" marginBottom="3%">
+        <InputGroup margin="2%" size="sm">
+          <InputLeftAddon children="username" fontWeight="semibold" />
+          <Input isReadOnly={true} value={user.nickname} roundedLeft="0" />
+        </InputGroup>
+        <InputGroup margin="2%" size="sm">
+          <InputLeftAddon children="email" fontWeight="semibold" />
+          <Input isReadOnly={true} value={user.email} roundedLeft="0" />
+        </InputGroup>
+        <FormHelperText id="email-helper-text" marginBottom="1%">
+          Your information will never be shared <span role="img">🤫</span>
+        </FormHelperText>
+      </Box>
+      <Box
+        margin="auto"
+        maxW="xl"
+        borderWidth="2px"
+        rounded="lg"
+        overflow="hidden"
+        marginTop="2%"
+      >
+        <Heading as="h2" size="md" margin="3%">
           My Events
         </Heading>
         <div>
-        {
-          protests.map(p => 
-            <ProtestCard
-              onAddClick={() => console.log('')}
-              protest={p}
-              isClicked={protestClicked._id === p._id ? true : false}
-              onCardClick={onCardClick}
-              openModal={openModal}
-              attending={true}
-            />
-        )}
+          {protests.map((p) => (
+            <Box borderWidth="3px" margin="2%" rounded="lg">
+              <ProtestCard
+                onAddClick={() => console.log("")}
+                protest={p}
+                isClicked={protestClicked._id === p._id ? true : false}
+                onCardClick={onCardClick}
+                openModal={openModal}
+                attending={true}
+              />
+            </Box>
+          ))}
         </div>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-          <ModalHeader fontSize="24px">{protestClicked.title}</ModalHeader>
-          <ModalBody>
-              <Text fontSize="18px" fontWeight="bold">Start Location: {protestClicked.startLocation[0].location.city}</Text>
-          </ModalBody>
-          <ModalBody>
-              <Text fontSize="18px" fontWeight="bold">End Location: {protestClicked.endLocation[0].location.city}</Text>
-          </ModalBody>
-          <ModalBody fontSize="16px" fontWeight="bold">
+            <ModalHeader fontSize="24px">{protestClicked.title}</ModalHeader>
+            <ModalBody>
+              <Text fontSize="18px" fontWeight="bold">
+                Start Location: {protestClicked.startLocation[0].location.city}
+              </Text>
+            </ModalBody>
+            <ModalBody>
+              <Text fontSize="18px" fontWeight="bold">
+                End Location: {protestClicked.endLocation[0].location.city}
+              </Text>
+            </ModalBody>
+            <ModalBody fontSize="16px" fontWeight="bold">
               When: {protestClickedTime}
-          </ModalBody>
-          <ModalBody>
+            </ModalBody>
+            <ModalBody>
               <h2>{protestClicked.summary}</h2>
-          </ModalBody>
-          <ModalBody>
+            </ModalBody>
+            <ModalBody>
               <h2>Resources needed: {getResources()}</h2>
-          </ModalBody>
-          <ModalFooter>
-              <Button variantColor="blue" mr={3} onClick={() => setIsOpen(false)}>
-              Close
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                variantColor="blue"
+                mr={3}
+                onClick={() => setIsOpen(false)}
+              >
+                Close
               </Button>
-          </ModalFooter>
+            </ModalFooter>
           </ModalContent>
         </Modal>
       </Box>
