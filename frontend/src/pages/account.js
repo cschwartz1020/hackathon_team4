@@ -5,6 +5,7 @@ import {
   FormErrorMessage,
   FormHelperText,
   Button,
+  ButtonGroup,
   Input,
   Box,
   Checkbox,
@@ -18,39 +19,42 @@ import ProtestCard from "../components/ProtestCard";
 import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 
-const defaultProtest = [{
-    summary: "For this protest we'll be meeting in Munn Park and walking to Charlotte. Bring signs, water, and masks.",
+const defaultProtest = [
+  {
+    summary:
+      "For this protest we'll be meeting in Munn Park and walking to Charlotte. Bring signs, water, and masks.",
     startLocation: [
-        {
-            location: {
-                latitude: 43.4528,
-                longitude: -110.7393,
-                city: "Jackson"
-            }
-        }
+      {
+        location: {
+          latitude: 43.4528,
+          longitude: -110.7393,
+          city: "Jackson",
+        },
+      },
     ],
     endLocation: [
-        {
-            location: {
-                latitude: 44.888,
-                longitude: -110.7393,
-                city: "Jackson"
-            }
-        }
+      {
+        location: {
+          latitude: 44.888,
+          longitude: -110.7393,
+          city: "Jackson",
+        },
+      },
     ],
     date: new Date(),
     time: new Date(),
     title: "Protest Against Police Brutality",
     resources: ["masks", "water"],
     id: 1,
-}];
+  },
+];
 
 export function Account(props) {
-  const [protests, setProtests] = useState(defaultProtest);
+  const [pastProtests, setPastProtests] = useState(defaultProtest);
+  const [upcomingProtests, setUpcomingProtests] = useState(defaultProtest);
   const [protestClicked, setProtestClicked] = useState(defaultProtest[0]);
   const [isOpen, setIsOpen] = useState(false);
-  const [protestClickedTime, setProtestClickedTime] = useState('10:00');
-
+  const [protestClickedTime, setProtestClickedTime] = useState("10:00");
 
   const columns = [
     {
@@ -77,22 +81,34 @@ export function Account(props) {
     },
   ];
 
-  const search = (id) => {
-    for (var i = 0; i < protests.length; i++) {
-        if (protests[i]._id === id) {
-            return protests[i];
-        }
+  const searchPast = (id) => {
+    for (var i = 0; i < pastProtests.length; i++) {
+      if (pastProtests[i]._id === id) {
+        return pastProtests[i];
+      }
+    }
+  };
+
+  const searchUpcoming = (id) => {
+    for (var i = 0; i < upcomingProtests.length; i++) {
+      if (upcomingProtests[i]._id === id) {
+        return upcomingProtests[i];
+      }
     }
   };
 
   const openModal = (time) => {
-    setProtestClickedTime(time)
-    setIsOpen(true)
-    };
+    setProtestClickedTime(time);
+    setIsOpen(true);
+  };
 
-  const onCardClick = (id) => {
-    setProtestClicked(search(id))
-  }
+  const onCardClickPast = (id) => {
+    setProtestClicked(searchPast(id));
+  };
+
+  const onCardClickUpcoming = (id) => {
+    setProtestClicked(searchUpcoming(id));
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -120,19 +136,58 @@ export function Account(props) {
       >
         <InputGroup marginTop="3%" marginBottom="3%" size="md">
           <InputLeftAddon children="username" fontWeight="semibold" />
-          <Input isReadOnly="false" value="sharvey" roundedLeft="0" />
+          <Input isReadOnly={true} value="sharvey" roundedLeft="0" />
         </InputGroup>
-        <Heading as="h2" size="md" marginBottom="3%">
-          My Past Events
-        </Heading>
-        <div>
-          <ProtestCard
-            protest={protests[0]} isClicked={false} 
-            //isClicked={protestClicked._id === p._id ? true : false}
-            onCardClick={onCardClick}
-            openModal={openModal}
-          />
-        </div>
+        <Box borderWidth="3px" margin="2%">
+          <Heading as="h2" size="md" marginBottom="3%">
+            My Upcoming Events
+          </Heading>
+          <div>
+            <ProtestCard
+              protest={upcomingProtests[0]}
+              isClicked={protestClicked._id === upcomingProtests[0]._id ? true : false}
+              onCardClick={onCardClickUpcoming}
+              openModal={openModal}
+            />
+          </div>
+          <ButtonGroup spacing={4} margin="2%">
+            <Button leftIcon="arrow-back" variantColor="teal" variant="solid">
+              Prev
+            </Button>
+            <Button
+              rightIcon="arrow-forward"
+              variantColor="teal"
+              variant="solid"
+            >
+              Next
+            </Button>
+          </ButtonGroup>
+        </Box>
+        <Box borderWidth="3px" margin="2%" marginTop="5%">
+          <Heading as="h2" size="md" marginBottom="3%">
+            My Past Events
+          </Heading>
+          <div>
+            <ProtestCard
+              protest={pastProtests[0]}
+              isClicked={protestClicked._id === pastProtests[0]._id ? true : false}
+              onCardClick={onCardClickPast}
+              openModal={openModal}
+            />
+          </div>
+          <ButtonGroup spacing={4} margin="2%">
+            <Button leftIcon="arrow-back" variantColor="teal" variant="solid">
+              Prev
+            </Button>
+            <Button
+              rightIcon="arrow-forward"
+              variantColor="teal"
+              variant="solid"
+            >
+              Next
+            </Button>
+          </ButtonGroup>
+        </Box>
       </Box>
     </div>
   );
