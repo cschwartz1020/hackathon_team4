@@ -5,7 +5,6 @@ import Navbar from "./components/navbar"
 import './App.css';
 import Protests from './pages/protests/Protests';
 import CreateProtest from './pages/protests/CreateProtest';
-import Signup from './pages/protests/Signup';
 import Feed from "./pages/feed"
 import Home from "./pages/home"
 import Account from "./pages/account"
@@ -29,7 +28,6 @@ function App() {
                     {/* exact means this is the first page to load */}
                     {!isAuthenticated ? <Route path="/" exact component={Login}/> : <PrivateRoute exact path="/" component={Home}/>}
                     <PrivateRoute exact path="/home" component={Home}/>
-                    <PrivateRoute path="/signup" component={Signup}/>
                     <PrivateRoute path="/registration" component={CreateProtest}/>
                     <PrivateRoute path="/view" component={Protests}/>
                     <PrivateRoute path="/feed" component={Feed}/>
