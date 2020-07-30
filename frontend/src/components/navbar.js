@@ -1,6 +1,14 @@
 import React from "react";
 import "../css/navbar.css";
-import { Box, Heading, Flex, Text, Button } from "@chakra-ui/core";
+import {
+  Box,
+  Heading,
+  Flex,
+  Text,
+  Button,
+  Image,
+  Stack,
+} from "@chakra-ui/core";
 import { Link } from "react-router-dom";
 
 const MenuItems = ({ children }) => (
@@ -28,9 +36,12 @@ const Navbar = (props) => {
         {...props}
       >
         <Flex align="center" mr={5}>
-          <Heading as="h1" size="lg" letterSpacing={"-.1rem"}>
-            Protestr
-          </Heading>
+          <Stack isInline>
+            <Image rounded="full" size="30px" src="../../protestrIcon.png" />
+            <Heading as="h1" size="lg" letterSpacing={"-.1rem"}>
+              Protestr
+            </Heading>
+          </Stack>
         </Flex>
 
         <Box display={{ base: "block", md: "none" }} onClick={handleToggle}>
