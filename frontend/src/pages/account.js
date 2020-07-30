@@ -157,7 +157,10 @@ export function Account(props) {
         <Heading as="h2" size="md" margin="3%">
           My Events
         </Heading>
-        <div>
+        {
+          protests.length > 0 ? 
+          <>
+          <div>
           {protests.map((p) => (
             <Box borderWidth="3px" margin="2%" rounded="lg">
               <ProtestCard
@@ -204,7 +207,10 @@ export function Account(props) {
               </Button>
             </ModalFooter>
           </ModalContent>
-        </Modal>
+        </Modal> 
+        </>
+        : <h1>You haven't signed up for any protests!</h1>
+      }
       </Box>
     </div>
   );
