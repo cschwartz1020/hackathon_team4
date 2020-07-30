@@ -3,19 +3,15 @@ import axios from "axios";
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Button,
   Input,
   Box,
   Checkbox,
   CheckboxGroup,
   Heading,
-  List,
-  ListItem,
-  ListIcon,
   InputRightElement,
   InputGroup,
+  useToast,
 } from "@chakra-ui/core";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -33,21 +29,44 @@ export function CreateProtest(props) {
   const [newResource, setNewResource] = useState(undefined);
   const [resources, setResources] = useState(["face masks", "water bottles"]);
   const [datetime, setDateTime] = useState(new Date());
+  const toast = useToast();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!title) {
-      alert("'Title' is a required field.");
+      toast({
+        position: "top",
+        title: "Required Field.",
+        description: "'Event Title' is a required field.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return;
     } else if (!startLocation) {
-      alert("'Start Location' is a required field.");
+      toast({
+        position: "top",
+        title: "Required Field.",
+        description: "'Start Location' is a required field.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return;
     } else if (!finalLocation) {
-      alert("'Final Location' is a required field.");
+      toast({
+        position: "top",
+        title: "Required Field.",
+        description: "'Final Location' is a required field.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return;
     }
+    const datetimeStr = getDatetimeStr(datetime);
     const data = {
-      time: datetime,
+      time: datetimeStr,
       startLocation: {
         location: startLocationObj,
       },
@@ -64,7 +83,7 @@ export function CreateProtest(props) {
         url: "http://localhost:3000/api/protests",
         data: data,
       });
-      console.log('👉 Returned data:',response);
+      console.log("👉 Returned data:", response);
     } catch (e) {
       console.log(`😱 Axios request failed: ${e}`);
     }
@@ -73,7 +92,6 @@ export function CreateProtest(props) {
   const handleStartSelect = async (value) => {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
-    console.log(results);
     setStartLocation(value);
     setStartLocationObj({
       country: results[0].address_components[5].long_name,
@@ -97,7 +115,7 @@ export function CreateProtest(props) {
     });
   };
 
-  const printMessage = (event) => {
+  /*const printMessage = (event) => {
     console.log({
       time: datetime,
       startLocation: {
@@ -110,7 +128,7 @@ export function CreateProtest(props) {
       summary: desc,
       resources: resources,
     });
-  };
+  };*/
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -118,6 +136,34 @@ export function CreateProtest(props) {
 
   const handleDescChange = (event) => {
     setDesc(event.target.value);
+  };
+
+  const getDatetimeStr = (datetime) => {
+    const date = datetime;
+    const dateTimeFormat = new Intl.DateTimeFormat("en", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const [
+      { value: month },
+      ,
+      { value: day },
+      ,
+      { value: year },
+      ,
+      { value: hour },
+      ,
+      { value: minute },
+      ,
+      { value: second },
+    ] = dateTimeFormat.formatToParts(date);
+    const datetimeStr = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    return datetimeStr;
   };
 
   const handleDateTimeChange = (datetime) => {
@@ -200,6 +246,9 @@ export function CreateProtest(props) {
       <Heading as="h1" size="xl" marginTop="3%">
         Register Your Event
       </Heading>
+      <Heading as="h1" size="md">
+        ✊🏿✊🏾✊🏽✊🏼✊🏻
+      </Heading>
       <Box
         margin="auto"
         maxW="xl"
@@ -268,11 +317,11 @@ export function CreateProtest(props) {
             >
               {makeCheckboxItems()}
             </CheckboxGroup>
-            <InputGroup size="md">
+            <InputGroup marginTop="3%" size="md">
               <Input
                 focusBorderColor="teal.400"
                 id="addresource"
-                placeholder="Resource"
+                placeholder="Add resource"
                 onChange={handleNewResourceChange}
               />
               <InputRightElement width="4.5rem">

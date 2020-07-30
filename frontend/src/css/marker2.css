@@ -1,0 +1,43 @@
+.marker {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    background-color: #000;
+    opacity: .7;
+    border: 2px solid rgba(255, 255, 255, 0.671);
+    border-radius: 100%;
+    user-select: none;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+
+  }
+
+
+.tool-tip {
+    z-index: 30;
+    cursor: pointer;
+    color: azure;
+    position: absolute;
+    background-color: rgba(36, 48, 48, 0.884);
+    height: 60px;
+    width: 110px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .7s ease-in-out;
+    top:-75px;
+    left: -55px;
+    border-radius: 4px;
+    -webkit-box-shadow: 2px 2px 8px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 2px 8px -1px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 8px -1px rgba(0,0,0,0.75);
+   
+}
+
+.marker-container:hover  .tool-tip {
+    visibility: visible;
+    opacity: 1;
+}
+
+
