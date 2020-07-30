@@ -3,7 +3,7 @@ import "../css/marker.css"
 import protestLogo from "../images/protestlogo.png"
 
 const Marker = (props) => {
-    const { color, name, location } = props;
+    const { color, name } = props;
     return (
       <div className="marker-container-protest">
       <img className="marker-icon"

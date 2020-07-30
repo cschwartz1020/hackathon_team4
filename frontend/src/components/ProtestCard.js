@@ -1,5 +1,5 @@
-import React, {useEffect} from "react"
-import { Box, IconButton, Text } from "@chakra-ui/core";
+import React from "react"
+import { Box, IconButton } from "@chakra-ui/core";
 
 const Protest = ({ protest, isClicked, onCardClick, openModal, attending, onAddClick }) => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

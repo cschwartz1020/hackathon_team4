@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from "react"
+import React, { useEffect, useState } from "react"
 import axios from 'axios';
 import MarkerLegend from "../../components/markerLegend"
 
@@ -63,7 +63,6 @@ const Protests = () => {
     const [localProtests, setLocalProtests] = useState(defaultProtest)
     const [protests, setProtests] = useState(defaultProtest)
     const [onlyLocalProtests, setOnlyLocalProtests] = useState(false)
-    //const [userProtests, setUserProtests] = useState(defaultProtest)
     const { user } = useAuth0()
 
     const getUserCoords = async () => {

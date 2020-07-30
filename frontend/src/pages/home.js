@@ -1,7 +1,6 @@
-import React, {useEffect} from "react"
+import React from "react"
 import "../css/home.css"
 import SimpleMap2 from "../components/simpleMap2"
-import axios from 'axios'
 import { useAuth0 } from "../react-auth0-spa";
 
 

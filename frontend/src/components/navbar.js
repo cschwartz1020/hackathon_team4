@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/navbar.css";
-import { Box, Heading, Flex, Text, Button, PseudoBox } from "@chakra-ui/core";
+import { Box, Heading, Flex, Text, Button } from "@chakra-ui/core";
 import { Link } from "react-router-dom";
 
 const MenuItems = ({ children }) => (

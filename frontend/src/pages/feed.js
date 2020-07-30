@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react"
 import axios from 'axios';
 import "../css/feed.css"
-import SimpleMap from "../components/simpleMap"
 import { useAuth0 } from '../react-auth0-spa'
 
-const protests = [
+/*const protests = [
     {
         description: "For this protest we'll be meeting in Munn Park and walking to Charlotte. Bring signs, water, and masks.",
         startLoc: "Lakeland",
@@ -18,13 +17,13 @@ const protests = [
         id: 0,
     },
 
-];
+];*/
 
-const defaultMarker = {
+/*const defaultMarker = {
     lat: 34.155834,
     lng:  -119.202789,
     title: "Example marker"
-};
+};*/
 
 let toggle = false;
 
