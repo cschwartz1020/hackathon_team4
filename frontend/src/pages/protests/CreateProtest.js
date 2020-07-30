@@ -12,6 +12,7 @@ import {
   InputRightElement,
   InputGroup,
   useToast,
+  Callout,
 } from "@chakra-ui/core";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -28,7 +29,10 @@ export function CreateProtest(props) {
   const [finalLocationObj, setFinalLocationObj] = useState(undefined);
   const [newResource, setNewResource] = useState(undefined);
   const [resources, setResources] = useState(["face masks", "water bottles"]);
-  const [allResources, setAllResources] = useState(["face masks", "water bottles"]);
+  const [allResources, setAllResources] = useState([
+    "face masks",
+    "water bottles",
+  ]);
   const [datetime, setDateTime] = useState(new Date());
   const toast = useToast();
 
@@ -88,7 +92,7 @@ export function CreateProtest(props) {
       toast({
         position: "top",
         title: "Success!",
-        description: "'"+title+"' has been registered. 🖤",
+        description: "'" + title + "' has been registered. 🖤",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -102,12 +106,29 @@ export function CreateProtest(props) {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
     setStartLocation(value);
+    let country,
+      city,
+      subdivision = undefined;
+    let i = 0;
+    for (i = 0; i < results[0].address_components.length; i++) {
+      if (results[0].address_components[i].types.includes("country")) {
+        country = results[0].address_components[i].long_name;
+      } else if (
+        results[0].address_components[i].types.includes(
+          "administrative_area_level_1"
+        )
+      ) {
+        subdivision = results[0].address_components[i].long_name;
+      } else if (results[0].address_components[i].types.includes("locality")) {
+        city = results[0].address_components[i].long_name;
+      }
+    }
     setStartLocationObj({
-      country: results[0].address_components[5].long_name,
-      city: results[0].address_components[2].long_name,
+      country: country,
+      city: city,
       latitude: latLng.lat,
       longitude: latLng.lng,
-      subdivision: results[0].address_components[4].long_name,
+      subdivision: subdivision,
     });
   };
 
@@ -115,12 +136,29 @@ export function CreateProtest(props) {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
     setFinalLocation(value);
+    let country,
+      city,
+      subdivision = undefined;
+    let i = 0;
+    for (i = 0; i < results[0].address_components.length; i++) {
+      if (results[0].address_components[i].types.includes("country")) {
+        country = results[0].address_components[i].long_name;
+      } else if (
+        results[0].address_components[i].types.includes(
+          "administrative_area_level_1"
+        )
+      ) {
+        subdivision = results[0].address_components[i].long_name;
+      } else if (results[0].address_components[i].types.includes("locality")) {
+        city = results[0].address_components[i].long_name;
+      }
+    }
     setFinalLocationObj({
-      country: results[0].address_components[5].long_name,
-      city: results[0].address_components[2].long_name,
+      country: country,
+      city: city,
       latitude: latLng.lat,
       longitude: latLng.lng,
-      subdivision: results[0].address_components[4].long_name,
+      subdivision: subdivision,
     });
   };
 
@@ -188,9 +226,9 @@ export function CreateProtest(props) {
   };
 
   const makeCheckboxItems = () => {
-    var resourcesList = allResources.map((item) => {
+    var resourcesList = allResources.map((item, index) => {
       return (
-        <Checkbox isChecked="true" value={item}>
+        <Checkbox key={index} isChecked="true" value={item} variantColor="teal">
           {item}
         </Checkbox>
       );
@@ -199,9 +237,9 @@ export function CreateProtest(props) {
   };
 
   const options = {
-    types: ['address'],
-    componentRestrictions: {country: 'us'}
-    }
+    types: ["address"],
+    componentRestrictions: { country: "us" },
+  };
 
   const getLocationDiv = (
     placeholder,
@@ -312,7 +350,7 @@ export function CreateProtest(props) {
             </FormLabel>
             <CheckboxGroup
               onChange={handleResourceChange}
-              variantColor="blue"
+              variantColor="teal"
               defaultValue={["face masks", "water bottles"]}
             >
               {makeCheckboxItems()}
