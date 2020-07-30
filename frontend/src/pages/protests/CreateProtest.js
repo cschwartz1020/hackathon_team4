@@ -28,6 +28,7 @@ export function CreateProtest(props) {
   const [finalLocationObj, setFinalLocationObj] = useState(undefined);
   const [newResource, setNewResource] = useState(undefined);
   const [resources, setResources] = useState(["face masks", "water bottles"]);
+  const [allResources, setAllResources] = useState(["face masks", "water bottles"]);
   const [datetime, setDateTime] = useState(new Date());
   const toast = useToast();
 
@@ -84,7 +85,14 @@ export function CreateProtest(props) {
         data: data,
       });
       console.log("👉 Returned data:", response);
-      alert('Your protest has been registered!')
+      toast({
+        position: "top",
+        title: "Success!",
+        description: "'"+title+"' has been registered. 🖤",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (e) {
       console.log(`😱 Axios request failed: ${e}`);
     }
@@ -115,21 +123,6 @@ export function CreateProtest(props) {
       subdivision: results[0].address_components[4].long_name,
     });
   };
-
-  /*const printMessage = (event) => {
-    console.log({
-      time: datetime,
-      startLocation: {
-        location: startLocationObj,
-      },
-      endLocation: {
-        location: finalLocationObj,
-      },
-      title: title,
-      summary: desc,
-      resources: resources,
-    });
-  };*/
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -188,14 +181,14 @@ export function CreateProtest(props) {
   };
 
   const handleNewResourceClick = () => {
-    const oldResources = resources;
+    const oldResources = allResources;
     oldResources.push(newResource);
-    setResources(oldResources);
+    setAllResources(oldResources);
     setNewResource(undefined);
   };
 
   const makeCheckboxItems = () => {
-    var resourcesList = resources.map((item) => {
+    var resourcesList = allResources.map((item) => {
       return (
         <Checkbox isChecked="true" value={item}>
           {item}
