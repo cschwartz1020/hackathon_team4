@@ -53,8 +53,6 @@ const Feed = (props) => {
     }
   }, [token]);
 
-  console.log(token)
-
   const getNews = () => {
     axios
       .get("http://localhost:3000/api/article/35", {
@@ -69,7 +67,6 @@ const Feed = (props) => {
   };
 
   const addUser = async () => {
-    console.log(`addUser ${token}`);
     await axios
       .post(
         "http://localhost:3000/api/users",
