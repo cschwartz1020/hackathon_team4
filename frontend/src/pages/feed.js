@@ -53,6 +53,8 @@ const Feed = (props) => {
     }
   }, [token]);
 
+  console.log(token)
+
   const getNews = () => {
     axios
       .get("http://localhost:3000/api/article/35", {

@@ -63,8 +63,9 @@ const Protests = () => {
     const [localProtests, setLocalProtests] = useState(defaultProtest)
     const [protests, setProtests] = useState(defaultProtest)
     const [onlyLocalProtests, setOnlyLocalProtests] = useState(false)
+    const [token, setToken] = useState(undefined)
     //const [userProtests, setUserProtests] = useState(defaultProtest)
-    const { user } = useAuth0()
+    const { user, getTokenSilently } = useAuth0()
 
     const getUserCoords = async () => {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -91,11 +92,28 @@ const Protests = () => {
             setLocalProtests(userLocalProtests)
         })
     }
+    useEffect(() => {
+        const getToken = async () => {
+            try {
+              const accessToken = await getTokenSilently({
+                audience: `development-protestr-api`,
+              });
+              setToken(accessToken);
+            } catch (e) {
+              console.log(e);
+            }
+        };
+        getToken()
+    }, [])
 
     useEffect(() => {
         const getUserProtests = async () => {
             let userProtestsTemp = []
-            await axios.get(`http://localhost:3000/api/users/email/${user.email}`)
+            await axios.get(`http://localhost:3000/api/users/email/${user.email}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
             .then(res => {
                 userProtestsTemp = res.data[0].protests
                 //setUserProtests(res.data[0].protests)
@@ -106,7 +124,11 @@ const Protests = () => {
         }
 
         const getProtests = async (userProtests) => {
-            await axios.get('http://localhost:3000/api/protests/')
+            await axios.get('http://localhost:3000/api/protests/', {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
             .then(res => {
                 let userSpecificProtests = [];
 
@@ -133,11 +155,12 @@ const Protests = () => {
             })
         }
         
-        if (user) {
+        if (user && token) {
+            
             getUserProtests()
         }
 
-    }, [user])
+    }, [user, token])
 
     useEffect(() => {
         getUserCoords()
@@ -185,8 +208,13 @@ const Protests = () => {
         let hasProtest = false;
         let userProtests;
         // first find the user in the db and save all of their protests they're signed up for
-        await axios.get(`http://localhost:3000/api/users/email/${user.email}`)
+        await axios.get(`http://localhost:3000/api/users/email/${user.email}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
         .then(res => {
+            console.log(token)
             userProtests = res.data[0].protests;
             for (const p of userProtests) {
                 if (p._id === protest._id) {
@@ -202,8 +230,13 @@ const Protests = () => {
     }
 
     const addProtest = async (userProtests) => {
-        await axios.put(`http://localhost:3000/api/users/email/${user.email}`, {protests: userProtests})
+        await axios.put(`http://localhost:3000/api/users/email/${user.email}`, {protests: userProtests}, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
         .then(res => {
+            console.log(token)
             window.location.reload();
         })
     }
