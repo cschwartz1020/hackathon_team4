@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
-import { Box, IconButton } from "@chakra-ui/core";
+import { Box, IconButton, Text } from "@chakra-ui/core";
 
-const Protest = ({ protest, isClicked, onCardClick, openModal }) => {
+const Protest = ({ protest, isClicked, onCardClick, openModal, visibleAdd }) => {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let date = new Date(Date.parse(protest.time));
 
@@ -27,6 +27,12 @@ const Protest = ({ protest, isClicked, onCardClick, openModal }) => {
     return (
         <div style={isClicked ? focus : card}>
             <Box onClick={cardClick} boxShadow="lg" bg="white" w="75%" p={6} color="white" as="button" borderWidth="1px" rounded="lg">
+                {
+                    visibleAdd ? (
+                    <Box>
+                        <IconButton icon="add" size="lg" color="white" variantColor="teal" aria-label="get info"/>
+                    </Box> ) : null
+                }
                 <Box
                     mt="1"
                     fontWeight="bold"
@@ -42,7 +48,7 @@ const Protest = ({ protest, isClicked, onCardClick, openModal }) => {
                     fontSize={18}
                     color="gray.500"
                 >
-                    {days[date.getDay()]} {date.getMonth() + 1}/{date.getDay()} at {time}
+                    {days[date.getDay()]} {date.getMonth()+1}/{date.getDate()} at {time}
                 </Box>
                 <Box
                     color="gray.500"
@@ -54,11 +60,6 @@ const Protest = ({ protest, isClicked, onCardClick, openModal }) => {
                 >
                     {protest.startLocation[0].location.city}
                 </Box>
-                {/* <Box
-                    color="white"
-                >
-                    {protest.summary}
-                </Box> */}
                 <IconButton icon="info-outline" size="lg" color="black" variantColor="white" aria-label="get info" onClick={() => openModal(time)}/>
             </Box>
         </div>
