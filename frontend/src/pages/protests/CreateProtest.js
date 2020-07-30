@@ -84,6 +84,7 @@ export function CreateProtest(props) {
         data: data,
       });
       console.log("👉 Returned data:", response);
+      alert('Your protest has been registered!')
     } catch (e) {
       console.log(`😱 Axios request failed: ${e}`);
     }
