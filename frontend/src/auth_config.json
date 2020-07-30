@@ -1,4 +1,5 @@
 {
-    "domain": "dev-lpw77tkk.us.auth0.com",
-    "clientId": "1uGcpAKz9q53nWroLAfXYO7I3kO7swJH"
+  "domain": "dev-lpw77tkk.us.auth0.com",
+  "clientId": "1uGcpAKz9q53nWroLAfXYO7I3kO7swJH",
+  "audience": "development-protestr-api"
 }

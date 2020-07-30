@@ -8,6 +8,7 @@ covidHelper = require("./util/covid/createCollection");
 newsHelper = require("./util/article/createCollection");
 app.use(express.json());
 app.use(cors());
+
 app.use(routes);
 
 app.listen(process.env.PORT || 3000, () => {
